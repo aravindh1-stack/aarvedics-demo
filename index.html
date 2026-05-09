@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarvedics | The Next-Gen Tuition Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Space Grotesk"', 'sans-serif'] },
+                    colors: { brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 900: '#1e1b4b' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased overflow-x-hidden relative">
+
+    <div class="absolute top-[-20%] left-[50%] translate-x-[-50%] w-[800px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <nav class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center relative z-10">
+        <div class="text-2xl font-bold tracking-tighter text-slate-900 flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-sm">A.</div>
+            Aarvedics
+        </div>
+        <div class="hidden md:flex space-x-8 font-medium text-slate-500 text-sm">
+            <a href="#" class="hover:text-brand-600 transition">Features</a>
+            <a href="#" class="hover:text-brand-600 transition">For Teachers</a>
+            <a href="#" class="hover:text-brand-600 transition">Pricing</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="#" class="hidden md:block text-sm font-bold text-slate-600 hover:text-slate-900">Login</a>
+            <button class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Get Started</button>
+        </div>
+    </nav>
+
+    <header class="max-w-5xl mx-auto px-6 pt-24 pb-20 text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold uppercase tracking-wider mb-8">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+            </span>
+            Aarga Protocol v1.0
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
+            Run your private tuition <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-violet-500">like a tech startup.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Stop using WhatsApp groups. Get an isolated, highly secure workspace to manage students, collect fees, and host live sessions with zero distractions.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <button class="bg-brand-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-brand-500 shadow-xl shadow-brand-500/25 transition-all hover:-translate-y-1">Start Free Trial</button>
+            <button class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all">Watch Demo</button>
+        </div>
+    </header>
+
+    <div class="border-y border-slate-200 bg-white/50 backdrop-blur-sm py-8 relative z-10">
+        <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Trusted by elite independent educators</p>
+        <div class="flex justify-center gap-12 text-slate-300 opacity-70 grayscale">
+            <svg class="h-8" viewBox="0 0 100 30" fill="currentColor"><path d="M10 20h20v5H10zM10 5h20v5H10z"/></svg>
+            <svg class="h-8" viewBox="0 0 100 30" fill="currentColor"><circle cx="20" cy="15" r="10"/></svg>
+            <svg class="h-8 hidden md:block" viewBox="0 0 100 30" fill="currentColor"><path d="M10 25L20 5l10 20H10z"/></svg>
+        </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 py-24 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">Everything you need. Nothing you don't.</h2>
+            <p class="text-slate-500">A clean, focused toolset designed exclusively for tutors.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mb-6">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">100% Isolated Rooms</h3>
+                <p class="text-slate-500">Your students stay yours. No cross-teacher data leakage. Strict multi-tenant architecture ensures complete privacy.</p>
+            </div>
+            <div class="bg-slate-900 text-white rounded-3xl p-8 border border-slate-800 shadow-xl overflow-hidden relative">
+                <div class="absolute top-[-50px] right-[-50px] w-32 h-32 bg-brand-500/30 blur-2xl rounded-full"></div>
+                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 backdrop-blur-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Auto-ID Generation</h3>
+                <p class="text-slate-400 text-sm">Add a student, and we automatically generate secure login IDs for both the student and their parents.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

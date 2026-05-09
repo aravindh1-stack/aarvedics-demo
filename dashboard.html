@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aarvedics — Teacher Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Light theme palette (removed yellow/gold tones) */
+      --cream:    #F8FAFC;
+      --cream-2:  #F1F5F9;
+      --cream-3:  #E2E8F0;
+      --sand:     #E6EEF8;
+      --bark:     #6B7280;
+      --ink:      #0F1724;
+      --ink-2:    #334155;
+      --ink-3:    #6B7280;
+      --gold:     #6366F1; /* brand (index's brand-500) */
+      --gold-600: #4F46E5; /* brand-600 */
+      --gold-lt:  #EEF2FF; /* brand-50 / light */
+      --sage:     #10B981;
+      --sage-lt:  #D1FAE5;
+      --rose:     #EF4444;
+      --rose-lt:  #FEE2E2;
+      --indigo:   #4A5FA8;
+      --indigo-lt: #EEF2FF;
+      --white:    #FFFFFF;
+      --shadow-sm: 0 1px 3px rgba(15,23,36,.04), 0 1px 2px rgba(15,23,36,.03);
+      --shadow-md: 0 6px 18px rgba(15,23,36,.06), 0 3px 6px rgba(15,23,36,.04);
+      --shadow-lg: 0 12px 36px rgba(15,23,36,.08), 0 6px 12px rgba(15,23,36,.05);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ─── SIDEBAR ─────────────────────────────────── */
+    aside {
+      width: 240px;
+      min-width: 240px;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    aside::before {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--cream-3);
+    }
+
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+    .logo-text span {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--bark);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-section-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bark);
+      padding: 0 10px;
+      margin: 16px 0 8px;
+    }
+    .nav-section-label:first-child { margin-top: 0; }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(15,23,36,.72);
+      transition: all .18s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      background: rgba(37,99,235,.06);
+      color: rgba(15,23,36,.95);
+    }
+
+    .nav-link.active {
+      background: var(--gold-lt);
+      color: var(--gold);
+    }
+
+    .nav-link.active .nav-icon { opacity: 1; }
+
+    .nav-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      opacity: .5;
+    }
+    .nav-link.active .nav-icon,
+    .nav-link:hover .nav-icon { opacity: 1; }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--rose);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 20px;
+    }
+
+    .sidebar-footer {
+      padding: 16px 14px;
+      border-top: 1px solid var(--cream-3);
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      background: var(--cream-2);
+      border: 1px solid var(--cream-3);
+    }
+
+    .user-avatar {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .user-role {
+      font-size: 10px;
+      color: var(--bark);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    /* ─── MAIN ──────────────────────────────────────── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 60px;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cream-3);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+    .breadcrumb-root { color: var(--bark); font-weight: 500; }
+    .breadcrumb-sep { color: var(--sand); }
+    .breadcrumb-current { color: var(--ink); font-weight: 700; }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--gold);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s, transform .08s;
+    }
+    .live-btn:hover { background: var(--gold-600); transform: translateY(-1px); }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(1.3); }
+    }
+
+    .icon-btn {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      border: 1px solid var(--cream-3);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all .15s;
+      color: var(--ink-3);
+    }
+    .icon-btn:hover { background: var(--cream-2); color: var(--ink); }
+
+    /* ─── CONTENT ────────────────────────────────────── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px 40px;
+    }
+
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--bark);
+      font-weight: 500;
+    }
+
+    /* ─── KPI ROW ───────────────────────────────────── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border: 1px solid var(--cream-3);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+    .kpi-card.accent-gold { border-top: 1px solid var(--cream-3); }
+    .kpi-card.accent-sage { border-top: 1px solid var(--cream-3); }
+    .kpi-card.accent-indigo { border-top: 1px solid var(--cream-3); }
+    .kpi-card.accent-rose { border-top: 1px solid var(--cream-3); }
+
+    .kpi-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 10px;
+    }
+
+    .kpi-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .kpi-delta {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 8px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      border: 1px solid var(--cream-3);
+      background: var(--cream-2);
+      color: var(--ink-2);
+    }
+    .kpi-delta.up { background: var(--cream-2); color: var(--ink-2); }
+    .kpi-delta.down { background: var(--cream-2); color: var(--ink-2); }
+
+    .kpi-icon {
+      position: absolute;
+      right: 18px; top: 18px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .kpi-icon.gold { background: var(--cream-2); color: var(--gold-600); }
+    .kpi-icon.sage { background: var(--cream-2); color: var(--gold-600); }
+    .kpi-icon.indigo { background: var(--cream-2); color: var(--gold-600); }
+    .kpi-icon.rose { background: var(--cream-2); color: var(--gold-600); }
+
+    /* ─── GRID ROW ──────────────────────────────────── */
+    .grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 340px;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .grid-row-2 {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 14px;
+    }
+
+    /* ─── CARD BASE ──────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--cream-3);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--cream-2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .card-action {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-600);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      transition: opacity .15s;
+    }
+    .card-action:hover { opacity: .7; }
+
+    .card-tag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .card-tag.morning { background: var(--gold-lt); color: var(--gold-600); }
+    .card-tag.evening { background: var(--indigo-lt); color: var(--indigo); }
+
+    /* ─── ATTENDANCE TABLE ─────────────────────────── */
+    .attendance-list { list-style: none; }
+
+    .att-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 22px;
+      border-bottom: 1px solid var(--cream);
+      transition: background .15s;
+    }
+    .att-row:last-child { border-bottom: none; }
+    .att-row:hover { background: var(--cream); }
+
+    .att-avatar {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      border: 1.5px solid var(--cream-2);
+    }
+
+    .att-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .att-meta {
+      font-size: 10px;
+      color: var(--bark);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .att-status-wrap { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+    .status-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+    .status-pill.present { background: var(--sage-lt); color: var(--sage); }
+    .status-pill.absent { background: var(--rose-lt); color: var(--rose); }
+    .status-pill.pending { background: var(--gold-lt); color: var(--gold); }
+
+    /* toggle */
+    .toggle {
+      width: 36px; height: 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .toggle.on { background: var(--sage); justify-content: flex-end; }
+    .toggle.off { background: var(--cream-3); justify-content: flex-start; }
+    .toggle-knob {
+      width: 16px; height: 16px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,.18);
+    }
+
+    /* ─── SCHEDULE CARD ─────────────────────────────── */
+    .schedule-list { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--cream-2);
+      background: var(--cream);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .schedule-item:hover { border-color: var(--sand); background: var(--cream-2); }
+    .schedule-item.active-class { border-color: var(--gold); background: var(--gold-lt); }
+
+    .schedule-time {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--bark);
+      min-width: 48px;
+      text-align: right;
+      letter-spacing: -.01em;
+    }
+
+    .schedule-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--sand);
+    }
+
+    .schedule-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .schedule-batch {
+      font-size: 10px;
+      color: var(--bark);
+      margin-top: 1px;
+    }
+
+    .schedule-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .schedule-dot.live { background: var(--sage); box-shadow: 0 0 0 3px var(--sage-lt); }
+    .schedule-dot.upcoming { background: var(--sand); }
+
+    /* ─── QUICK ONBOARD ──────────────────────────────── */
+    .onboard-card {
+      background: var(--gold-lt);
+      border: 1px solid var(--gold);
+    }
+
+    .onboard-card .card-header {
+      background: transparent;
+      border-bottom: 1px solid var(--gold);
+    }
+    .onboard-card .card-title { color: var(--gold-600); }
+
+    .onboard-body {
+      padding: 20px 22px;
+    }
+
+    .onboard-desc {
+      font-size: 12px;
+      color: var(--bark);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+    .field-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 4px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: var(--white);
+      border: 1px solid var(--cream-3);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s, background .15s;
+    }
+    .field-input::placeholder { color: rgba(107,114,128,.45); }
+    .field-input:focus { border-color: var(--gold); background: var(--white); }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .add-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .add-btn:hover { background: var(--gold-600); }
+    .add-btn:active { transform: scale(.98); }
+
+    /* ─── DUES CARD ─────────────────────────────────── */
+    .dues-list { padding: 12px 18px; display: flex; flex-direction: column; gap: 6px; }
+
+    .dues-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: var(--cream);
+      border: 1px solid var(--cream-2);
+      transition: all .15s;
+      cursor: pointer;
+    }
+    .dues-item:hover { border-color: var(--rose); background: var(--rose-lt); }
+
+    .dues-avatar {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--rose-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: var(--rose);
+      flex-shrink: 0;
+    }
+
+    .dues-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .dues-days { font-size: 10px; color: var(--bark); margin-top: 1px; }
+    .dues-amount { margin-left: auto; font-size: 12.5px; font-weight: 700; color: var(--rose); }
+
+    /* ─── PROGRESS BAR ──────────────────────────────── */
+    .progress-row { padding: 18px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+    .prog-item { }
+    .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .prog-label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+    .prog-val { font-size: 11px; font-weight: 700; color: var(--bark); }
+
+    .prog-bar {
+      height: 6px;
+      background: var(--cream-2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width .6s ease;
+    }
+    .prog-fill.gold { background: var(--gold); }
+    .prog-fill.sage { background: var(--sage); }
+    .prog-fill.indigo { background: var(--indigo); }
+
+    /* ─── SCROLLBAR ──────────────────────────────────── */
+    .content::-webkit-scrollbar { width: 5px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 10px; }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .kpi-card { animation: fadeUp .4s ease both; }
+    .kpi-card:nth-child(1) { animation-delay: .05s; }
+    .kpi-card:nth-child(2) { animation-delay: .1s; }
+    .kpi-card:nth-child(3) { animation-delay: .15s; }
+    .kpi-card:nth-child(4) { animation-delay: .2s; }
+
+    .card { animation: fadeUp .4s ease both; animation-delay: .25s; }
+  </style>
+</head>
+<body>
+
+  <!-- ────────── SIDEBAR ────────── -->
+  <aside>
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <div class="logo-icon">A</div>
+        <div class="logo-text">
+          Aarvedics
+          <span>Teacher Portal</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+
+      <a href="#" class="nav-link active">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Overview
+      </a>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
+        Students
+        <span class="nav-badge">6</span>
+      </a>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Schedule
+      </a>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
+        Analytics
+      </a>
+
+      <div class="nav-section-label">Finance</div>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Payments
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="#" class="nav-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Reports
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">AM</div>
+        <div>
+          <div class="user-name">Aravindh M.</div>
+          <div class="user-role">Teacher Account</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ────────── MAIN ────────── -->
+  <main>
+    <header>
+      <div class="breadcrumb">
+        <span class="breadcrumb-root">Dashboard</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Teacher Overview</span>
+      </div>
+      <div class="header-actions">
+        <div class="icon-btn" title="Notifications">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-9.33-5M13 21a2 2 0 01-4 0"/></svg>
+        </div>
+        <div class="icon-btn" title="Settings">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </div>
+        <button class="live-btn">
+          <div class="live-dot"></div>
+          Live Session
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Page Title -->
+      <div class="page-header">
+        <h1 class="page-title">Good morning, Aravindh 👋</h1>
+        <p class="page-subtitle">Friday, 08 May 2026 &nbsp;·&nbsp; 10th Standard &nbsp;·&nbsp; 3 classes today</p>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="kpi-row">
+        <div class="kpi-card accent-gold">
+          <div class="kpi-icon gold">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="kpi-label">Total Students</div>
+          <div class="kpi-value">128</div>
+          <div class="kpi-delta up">↑ 4 this month</div>
+        </div>
+        <div class="kpi-card accent-sage">
+          <div class="kpi-icon sage">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="kpi-label">Revenue</div>
+          <div class="kpi-value">₹42,800</div>
+          <div class="kpi-delta up">↑ 12% vs last</div>
+        </div>
+        <div class="kpi-card accent-indigo">
+          <div class="kpi-icon indigo">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="kpi-label">Attendance</div>
+          <div class="kpi-value">94%</div>
+          <div class="kpi-delta up">↑ 2% vs last</div>
+        </div>
+        <div class="kpi-card accent-rose">
+          <div class="kpi-icon rose">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </div>
+          <div class="kpi-label">Pending Dues</div>
+          <div class="kpi-value">₹6,400</div>
+          <div class="kpi-delta down">↓ 3 students</div>
+        </div>
+      </div>
+
+      <!-- Row 1: Attendance + Schedule + Quick Onboard -->
+      <div class="grid-row">
+
+        <!-- Attendance -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Today's Attendance</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="card-tag morning">Morning</span>
+              <button class="card-action">View All</button>
+            </div>
+          </div>
+          <ul class="attendance-list">
+            <li class="att-row">
+              <div class="att-avatar" style="background:var(--gold-lt);color:var(--gold-600);">AK</div>
+              <div>
+                <div class="att-name">Ashwin Kumar</div>
+                <div class="att-meta">Mathematics · Seat 01</div>
+              </div>
+              <div class="att-status-wrap">
+                <span class="status-pill present">Present</span>
+                <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </li>
+            <li class="att-row">
+              <div class="att-avatar" style="background:var(--rose-lt);color:var(--rose);">SP</div>
+              <div>
+                <div class="att-name">Sneha Priya</div>
+                <div class="att-meta">Science · Seat 02</div>
+              </div>
+              <div class="att-status-wrap">
+                <span class="status-pill absent">Absent</span>
+                <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </li>
+            <li class="att-row">
+              <div class="att-avatar" style="background:var(--indigo-lt);color:var(--indigo);">RV</div>
+              <div>
+                <div class="att-name">Rahul Venkat</div>
+                <div class="att-meta">Mathematics · Seat 03</div>
+              </div>
+              <div class="att-status-wrap">
+                <span class="status-pill present">Present</span>
+                <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </li>
+            <li class="att-row">
+              <div class="att-avatar" style="background:var(--sage-lt);color:var(--sage);">KM</div>
+              <div>
+                <div class="att-name">Karthik M.</div>
+                <div class="att-meta">Science · Seat 04</div>
+              </div>
+              <div class="att-status-wrap">
+                <span class="status-pill pending">Pending</span>
+                <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
+                  <div class="toggle-knob"></div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Schedule -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Today's Schedule</div>
+            <button class="card-action">Edit</button>
+          </div>
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <div class="schedule-time">08:00<br>AM</div>
+              <div class="schedule-divider"></div>
+              <div>
+                <div class="schedule-name">Mathematics – 10th Std</div>
+                <div class="schedule-batch">Morning Batch · 24 students</div>
+              </div>
+              <div class="schedule-dot upcoming"></div>
+            </div>
+            <div class="schedule-item active-class">
+              <div class="schedule-time" style="color:var(--gold)">10:30<br>AM</div>
+              <div class="schedule-divider" style="background:var(--gold-lt)"></div>
+              <div>
+                <div class="schedule-name" style="color:var(--gold)">Science – 9th Std</div>
+                <div class="schedule-batch">Morning Batch · 18 students</div>
+              </div>
+              <div class="schedule-dot live"></div>
+            </div>
+            <div class="schedule-item">
+              <div class="schedule-time">02:00<br>PM</div>
+              <div class="schedule-divider"></div>
+              <div>
+                <div class="schedule-name">Mathematics – 8th Std</div>
+                <div class="schedule-batch">Evening Batch · 22 students</div>
+              </div>
+              <div class="schedule-dot upcoming"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Onboard -->
+        <div class="card onboard-card">
+          <div class="card-header">
+            <div class="card-title">Quick Onboard</div>
+            <svg width="14" height="14" fill="none" stroke="var(--bark)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="onboard-body">
+            <p class="onboard-desc">Generate unique Student &amp; Parent IDs instantly for new joinees.</p>
+            <div class="field-group">
+              <div>
+                <div class="field-label">Student Name</div>
+                <input class="field-input" type="text" placeholder="e.g. Priya Ramesh" />
+              </div>
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Standard</div>
+                  <input class="field-input" type="text" placeholder="10th" />
+                </div>
+                <div>
+                  <div class="field-label">Batch</div>
+                  <input class="field-input" type="text" placeholder="Morning" />
+                </div>
+              </div>
+              <div>
+                <div class="field-label">Mobile Number</div>
+                <input class="field-input" type="tel" placeholder="+91 98765 43210" />
+              </div>
+            </div>
+            <button class="add-btn" onclick="handleAddStudent(this)">+ Add Student</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 2: Dues + Batch Progress -->
+      <div class="grid-row-2">
+
+        <!-- Pending Dues -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Pending Dues</div>
+            <button class="card-action">Send Reminders</button>
+          </div>
+          <div class="dues-list">
+            <div class="dues-item">
+              <div class="dues-avatar">RK</div>
+              <div>
+                <div class="dues-name">Ramesh K.</div>
+                <div class="dues-days">Overdue · 14 days</div>
+              </div>
+              <div class="dues-amount">₹1,200</div>
+            </div>
+            <div class="dues-item">
+              <div class="dues-avatar">MN</div>
+              <div>
+                <div class="dues-name">Meena N.</div>
+                <div class="dues-days">Overdue · 7 days</div>
+              </div>
+              <div class="dues-amount">₹2,400</div>
+            </div>
+            <div class="dues-item">
+              <div class="dues-avatar">VB</div>
+              <div>
+                <div class="dues-name">Vijay B.</div>
+                <div class="dues-days">Overdue · 3 days</div>
+              </div>
+              <div class="dues-amount">₹800</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Batch Performance -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Batch Performance</div>
+            <button class="card-action">Full Report</button>
+          </div>
+          <div class="progress-row">
+            <div class="prog-item">
+              <div class="prog-top">
+                <div class="prog-label">10th Standard — Mathematics</div>
+                <div class="prog-val">87%</div>
+              </div>
+              <div class="prog-bar"><div class="prog-fill gold" style="width:87%"></div></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-top">
+                <div class="prog-label">9th Standard — Science</div>
+                <div class="prog-val">72%</div>
+              </div>
+              <div class="prog-bar"><div class="prog-fill sage" style="width:72%"></div></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-top">
+                <div class="prog-label">8th Standard — Mathematics</div>
+                <div class="prog-val">91%</div>
+              </div>
+              <div class="prog-bar"><div class="prog-fill indigo" style="width:91%"></div></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-top">
+                <div class="prog-label">Overall Attendance Rate</div>
+                <div class="prog-val">94%</div>
+              </div>
+              <div class="prog-bar"><div class="prog-fill gold" style="width:94%"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function handleAddStudent(btn) {
+      const body = btn.closest('.onboard-body');
+      const inputs = body.querySelectorAll('input');
+      const name = inputs[0].value.trim();
+      if (!name) { inputs[0].focus(); return; }
+
+      btn.textContent = 'Adding...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        const id = 'STU-' + Math.random().toString(36).substr(2,6).toUpperCase();
+        btn.textContent = `✓ Added — ID: ${id}`;
+        btn.style.background = 'var(--sage)';
+        inputs.forEach(i => i.value = '');
+        setTimeout(() => {
+          btn.textContent = '+ Add Student';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }, 800);
+    }
+  </script>
+</body>
+</html>
