@@ -1,813 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased hide-scrollbar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aarvedics — Student Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --cream:    #F8FAFC;
-      --cream-2:  #F1F5F9;
-      --cream-3:  #E2E8F0;
-      --sand:     #E6EEF8;
-      --bark:     #6B7280;
-      --ink:      #0F1724;
-      --ink-2:    #334155;
-      --ink-3:    #6B7280;
-      --gold:     #6366F1;
-      --gold-600: #4F46E5;
-      --gold-lt:  #EEF2FF;
-      --sage:     #10B981;
-      --sage-lt:  #D1FAE5;
-      --rose:     #EF4444;
-      --rose-lt:  #FEE2E2;
-      --white:    #FFFFFF;
-      --shadow-sm: 0 1px 3px rgba(15,23,36,.04), 0 1px 2px rgba(15,23,36,.03);
-      --shadow-md: 0 6px 18px rgba(15,23,36,.06), 0 3px 6px rgba(15,23,36,.04);
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
-
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      height: 100vh;
-      display: flex;
-      overflow: hidden;
-    }
-
-    aside {
-      width: 232px;
-      min-width: 232px;
-      background: var(--white);
-      border-right: 1px solid var(--cream-3);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-
-    aside::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 200px;
-      height: 200px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(99,102,241,.12) 0%, transparent 72%);
-      pointer-events: none;
-    }
-
-    .sidebar-logo {
-      padding: 26px 20px 20px;
-      border-bottom: 1px solid var(--cream-3);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--gold);
-      color: var(--white);
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .logo-copy {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.1;
-    }
-
-    .logo-copy span {
-      display: block;
-      font-size: 9px;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      color: var(--bark);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    .nav {
-      padding: 16px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex: 1;
-    }
-
-    .nav-title {
-      font-size: 9px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--bark);
-      font-weight: 700;
-      margin: 10px 8px 4px;
-    }
-
-    .nav-link {
-      text-decoration: none;
-      color: rgba(15,23,36,.72);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 500;
-      transition: .16s ease;
-    }
-
-    .nav-link svg { width: 15px; height: 15px; opacity: .65; }
-
-    .nav-link:hover {
-      background: rgba(99,102,241,.06);
-      color: var(--ink);
-    }
-
-    .nav-link.active {
-      background: var(--gold-lt);
-      color: var(--gold-600);
-      font-weight: 600;
-    }
-
-    .nav-link.active svg,
-    .nav-link:hover svg { opacity: 1; }
-
-    .student-card {
-      margin: 0 12px 14px;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .student-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--gold-lt);
-      color: var(--gold-600);
-      display: grid;
-      place-items: center;
-      font-size: 11px;
-      font-weight: 700;
-      border: 1px solid #DDE5FF;
-    }
-
-    .student-name { font-size: 12px; font-weight: 700; color: var(--ink); }
-    .student-meta { font-size: 10px; color: var(--bark); margin-top: 2px; }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      min-height: 0;
-    }
-
-    header {
-      height: 62px;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--cream-3);
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-    }
-
-    .breadcrumb span:first-child,
-    .breadcrumb span:nth-child(2) { color: var(--bark); }
-    .breadcrumb strong { color: var(--ink); }
-
-    .head-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--cream-3);
-      border-radius: 10px;
-      background: var(--white);
-      color: var(--ink-3);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: .15s ease;
-    }
-
-    .icon-btn:hover {
-      background: var(--cream-2);
-      color: var(--ink);
-    }
-
-    .join-btn {
-      border: none;
-      border-radius: 10px;
-      background: var(--gold);
-      color: var(--white);
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: .15s ease;
-      font-family: inherit;
-    }
-
-    .join-btn:hover { background: var(--gold-600); }
-
-    .content {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 26px 28px 34px;
-    }
-
-    .page-head { margin-bottom: 22px; }
-
-    .page-title {
-      font-size: 27px;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.12;
-    }
-
-    .page-sub {
-      margin-top: 6px;
-      font-size: 13px;
-      color: var(--bark);
-      font-weight: 500;
-    }
-
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .kpi-card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-      transition: .2s ease;
-    }
-
-    .kpi-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
-    }
-
-    .kpi-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--bark);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 30px;
-      line-height: 1;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .kpi-note {
-      margin-top: 8px;
-      font-size: 10px;
-      color: var(--ink-2);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      border-radius: 18px;
-      padding: 2px 7px;
-      font-weight: 600;
-    }
-
-    .kpi-icon {
-      position: absolute;
-      right: 16px;
-      top: 16px;
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: var(--cream-2);
-      color: var(--gold-600);
-      display: grid;
-      place-items: center;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 12px;
-    }
-
-    .stack { display: grid; gap: 12px; }
-
-    .card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--cream-2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .card-link {
-      border: none;
-      background: none;
-      color: var(--gold-600);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .timeline {
-      padding: 12px 14px 14px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .timeline-item {
-      border: 1px solid var(--cream-2);
-      border-radius: 10px;
-      background: var(--cream);
-      padding: 10px 11px;
-      display: grid;
-      grid-template-columns: 56px 1fr auto;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .time {
-      font-size: 10px;
-      line-height: 1.2;
-      text-align: right;
-      color: var(--bark);
-      font-weight: 700;
-    }
-
-    .subject {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .topic {
-      font-size: 10px;
-      color: var(--bark);
-      margin-top: 2px;
-    }
-
-    .chip {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      border-radius: 999px;
-      padding: 4px 7px;
-      font-weight: 700;
-    }
-
-    .chip.live { background: var(--sage-lt); color: var(--sage); }
-    .chip.next { background: var(--gold-lt); color: var(--gold-600); }
-
-    .assignment-list,
-    .activity-list { list-style: none; }
-
-    .assignment-item,
-    .activity-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 18px;
-      border-bottom: 1px solid var(--cream);
-    }
-
-    .assignment-item:last-child,
-    .activity-item:last-child { border-bottom: none; }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      flex-shrink: 0;
-      background: var(--gold);
-      box-shadow: 0 0 0 3px var(--gold-lt);
-    }
-
-    .item-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .item-sub {
-      font-size: 10px;
-      color: var(--bark);
-      margin-top: 2px;
-    }
-
-    .score {
-      margin-left: auto;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--ink-2);
-    }
-
-    .progress-wrap { padding: 16px 18px; }
-
-    .progress-item { margin-bottom: 12px; }
-    .progress-item:last-child { margin-bottom: 0; }
-
-    .progress-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 11px;
-      color: var(--ink-2);
-      font-weight: 600;
-    }
-
-    .bar {
-      height: 7px;
-      background: var(--cream-2);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar > span {
-      display: block;
-      height: 100%;
-      background: var(--gold);
-      border-radius: 999px;
-    }
-
-    .announcements {
-      padding: 14px 18px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .notice {
-      border: 1px solid var(--cream-3);
-      border-radius: 10px;
-      padding: 10px 11px;
-      background: var(--white);
-    }
-
-    .notice-head {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .notice-body {
-      margin-top: 4px;
-      font-size: 10px;
-      line-height: 1.45;
-      color: var(--bark);
-    }
-
-    @media (max-width: 1180px) {
-      .kpi-row { grid-template-columns: repeat(2, 1fr); }
-      .layout { grid-template-columns: 1fr; }
-      body { overflow: auto; }
-      main { min-width: 0; }
-    }
-
-    @media (max-width: 860px) {
-      body {
-        display: block;
-        overflow: auto;
-      }
-
-      aside {
-        width: 100%;
-        min-width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--cream-3);
-      }
-
-      .nav {
-        overflow-x: auto;
-        display: flex;
-        flex-direction: row;
-        gap: 8px;
-        padding-bottom: 14px;
-      }
-
-      .nav-title { display: none; }
-
-      .nav-link {
-        white-space: nowrap;
-        border: 1px solid var(--cream-3);
-      }
-
-      .student-card { margin-top: 0; }
-
-      header {
-        padding: 0 16px;
-      }
-
-      .content {
-        padding: 20px 16px 28px;
-      }
-
-      .kpi-row { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarvedics | Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Space Grotesk"', 'sans-serif'] },
+                    colors: { brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 900: '#1e1b4b' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .animate-fadeUp { animation: fadeUp 0.6s ease-out forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .live-indicator {
+            animation: pulse-ring 2s infinite;
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
-<body>
-  <aside>
-    <div class="sidebar-logo">
-      <div class="logo-icon">A</div>
-      <div class="logo-copy">Aarvedics<span>Aarga Student</span></div>
-    </div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col md:flex-row overflow-x-hidden overflow-y-auto hide-scrollbar relative">
+    
+    <!-- Background Orbs -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <nav class="nav">
-      <div class="nav-title">Student</div>
-      <a class="nav-link active" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Overview
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l2.5 2.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Timetable
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
-        Assignments
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16"/></svg>
-        Progress
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2"/><path stroke-linecap="round" d="M12 7v10M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Fee Status
-      </a>
-    </nav>
-
-    <div class="student-card">
-      <div class="student-avatar">SK</div>
-      <div>
-        <div class="student-name">Sanjay Kumar</div>
-        <div class="student-meta">10th Std · Batch A</div>
-      </div>
-    </div>
-  </aside>
-
-  <main>
-    <header>
-      <div class="breadcrumb">
-        <span>Dashboard</span>
-        <span>/</span>
-        <strong>Student Overview</strong>
-      </div>
-      <div class="head-actions">
-        <button class="icon-btn" title="Notifications">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m4 0a2 2 0 11-4 0"/></svg>
-        </button>
-        <button class="join-btn">Join Live Class</button>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="page-head">
-        <h1 class="page-title">Good evening, Sanjay</h1>
-        <p class="page-sub">Friday, 08 May 2026 · 10th Standard · 2 classes remaining today</p>
-      </div>
-
-      <section class="kpi-row">
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
-          </div>
-          <div class="kpi-label">Assignments Due</div>
-          <div class="kpi-value">03</div>
-          <div class="kpi-note">Next due in 2 days</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-label">Attendance</div>
-          <div class="kpi-value">94%</div>
-          <div class="kpi-note">This month</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8"/></svg>
-          </div>
-          <div class="kpi-label">Average Score</div>
-          <div class="kpi-value">86</div>
-          <div class="kpi-note">+4 from last test</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2"/><path stroke-linecap="round" d="M12 7v10M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-label">Fee Status</div>
-          <div class="kpi-value">Paid</div>
-          <div class="kpi-note">May 2026 cleared</div>
-        </article>
-      </section>
-
-      <section class="layout">
-        <div class="stack">
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Today's Class Timeline</div>
-              <button class="card-link">Full Timetable</button>
-            </div>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="time">08:00<br>AM</div>
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 glass-nav flex flex-col justify-between relative z-20 flex-shrink-0">
+        <div>
+            <div class="p-5 sm:p-6 border-b border-white/50 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-xl shadow-lg shadow-brand-500/30">A</div>
                 <div>
-                  <div class="subject">Mathematics</div>
-                  <div class="topic">Quadratic Equations · Chapter Test Revision</div>
+                    <h1 class="font-bold text-slate-900 text-lg leading-tight">Aarvedics</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Student Portal</p>
                 </div>
-                <span class="chip live">Done</span>
-              </div>
-              <div class="timeline-item">
-                <div class="time">10:30<br>AM</div>
-                <div>
-                  <div class="subject">Science</div>
-                  <div class="topic">Chemical Reactions · Concept Practice</div>
-                </div>
-                <span class="chip live">Live</span>
-              </div>
-              <div class="timeline-item">
-                <div class="time">02:00<br>PM</div>
-                <div>
-                  <div class="subject">Mathematics</div>
-                  <div class="topic">Sample Paper Session</div>
-                </div>
-                <span class="chip next">Upcoming</span>
-              </div>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Subject Progress</div>
-              <button class="card-link">View Report</button>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-item">
-                <div class="progress-top"><span>Mathematics</span><span>88%</span></div>
-                <div class="bar"><span style="width:88%"></span></div>
-              </div>
-              <div class="progress-item">
-                <div class="progress-top"><span>Science</span><span>81%</span></div>
-                <div class="bar"><span style="width:81%"></span></div>
-              </div>
-              <div class="progress-item">
-                <div class="progress-top"><span>Mock Tests</span><span>74%</span></div>
-                <div class="bar"><span style="width:74%"></span></div>
-              </div>
-            </div>
-          </article>
+            
+            <nav class="p-4 space-y-1 flex flex-wrap md:flex-col gap-1">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Learning</p>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-brand-50 text-brand-600 font-semibold transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    Home
+                </a>
+                <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        Assignments
+                    </div>
+                    <span class="bg-brand-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Recorded Classes
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Timetable
+                </a>
+            </nav>
         </div>
-
-        <div class="stack">
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Assignments</div>
-              <button class="card-link">Open All</button>
+        
+        <div class="p-4 border-t border-white/50">
+            <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-600 font-medium hover:bg-rose-50 transition-colors w-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Logout
+            </a>
+            <div class="mt-4 flex items-center gap-3 px-2">
+                <div class="w-8 h-8 rounded-full bg-indigo-200 border-2 border-white flex items-center justify-center text-xs font-bold text-indigo-700">RV</div>
+                <div>
+                    <p class="text-sm font-bold text-slate-900 leading-none">Rahul V.</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Class 10-A</p>
+                </div>
             </div>
-            <ul class="assignment-list">
-              <li class="assignment-item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Math Worksheet 08</div>
-                  <div class="item-sub">Due: 10 May · 20 marks</div>
-                </div>
-                <div class="score">Pending</div>
-              </li>
-              <li class="assignment-item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Science Diagram Practice</div>
-                  <div class="item-sub">Due: 12 May · 15 marks</div>
-                </div>
-                <div class="score">Pending</div>
-              </li>
-              <li class="assignment-item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Math Mock Test 4</div>
-                  <div class="item-sub">Submitted · Evaluated</div>
-                </div>
-                <div class="score">18/20</div>
-              </li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Recent Activity</div>
-              <button class="card-link">View Log</button>
-            </div>
-            <ul class="activity-list">
-              <li class="activity-item">
-                <span class="dot" style="background:var(--sage);box-shadow:0 0 0 3px var(--sage-lt);"></span>
-                <div>
-                  <div class="item-title">Attendance marked for Science</div>
-                  <div class="item-sub">Today · 10:36 AM</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <span class="dot" style="background:var(--gold);box-shadow:0 0 0 3px var(--gold-lt);"></span>
-                <div>
-                  <div class="item-title">New assignment published</div>
-                  <div class="item-sub">Yesterday · 07:15 PM</div>
-                </div>
-              </li>
-              <li class="activity-item">
-                <span class="dot" style="background:var(--rose);box-shadow:0 0 0 3px var(--rose-lt);"></span>
-                <div>
-                  <div class="item-title">Fee reminder sent for June</div>
-                  <div class="item-sub">Yesterday · 09:02 AM</div>
-                </div>
-              </li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Announcements</div>
-              <button class="card-link">All Notices</button>
-            </div>
-            <div class="announcements">
-              <div class="notice">
-                <div class="notice-head">Sunday Extra Class</div>
-                <p class="notice-body">Special revision class on Sunday at 8:00 AM for Board Exam prep.</p>
-              </div>
-              <div class="notice">
-                <div class="notice-head">Parent Review Meet</div>
-                <p class="notice-body">Parent review meeting scheduled on 15 May at 6:30 PM.</p>
-              </div>
-            </div>
-          </article>
         </div>
-      </section>
-    </div>
-  </main>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-0 relative z-10 overflow-x-hidden">
+        
+        <!-- Header -->
+        <header class="min-h-16 glass-nav border-b border-white/50 flex flex-col sm:flex-row gap-3 sm:gap-0 items-start sm:items-center justify-between px-4 sm:px-8 py-3 sticky top-0 z-20">
+            <div class="flex items-center gap-2 text-sm font-medium">
+                <span class="text-slate-400">Dashboard</span>
+                <span class="text-slate-300">/</span>
+                <span class="text-slate-800">My Learning</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Gamification Streak -->
+                <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
+                    <span class="text-lg">🔥</span>
+                    <span class="text-xs font-bold text-amber-700">7 Days Streak!</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="p-4 sm:p-8 pb-20">
+            <div class="mb-8 animate-fadeUp opacity-0 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Ready to learn, Rahul? 📚</h2>
+                    <p class="text-slate-500 mt-1">Let's keep that streak going! You have 1 live class right now.</p>
+                </div>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                
+                <!-- Live Now (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-100 relative overflow-hidden group border-emerald-200/50 hover:border-emerald-300 transition-colors cursor-pointer">
+                    <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500 live-indicator"></div>
+                            <h3 class="font-bold text-slate-900 tracking-wide uppercase text-sm">Live Class Active</h3>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded">JOIN NOW</span>
+                    </div>
+                    
+                    <div class="relative z-10">
+                        <h4 class="text-2xl font-bold text-slate-900 mb-1">Mathematics: Quadratic Equations</h4>
+                        <p class="text-sm text-slate-500 mb-6">By Arjun K. · Started 5 mins ago</p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-colors shadow-lg shadow-emerald-500/20 w-full sm:w-auto">
+                                Enter Classroom
+                            </button>
+                            <button class="bg-white/50 hover:bg-white text-slate-600 font-bold py-2.5 px-4 rounded-xl text-sm border border-slate-200 transition-colors w-full sm:w-auto">
+                                View Materials
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Progress Bar -->
+                <div class="glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Syllabus Progress</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">Mathematics</span>
+                                <span class="text-brand-600">65%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-brand-500 w-[65%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">Science</span>
+                                <span class="text-emerald-600">42%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-emerald-500 w-[42%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">English</span>
+                                <span class="text-amber-600">80%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-amber-500 w-[80%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ask Doubt Prominent Card -->
+                <div class="glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-300 bg-gradient-to-br from-brand-50 to-indigo-50 border-brand-100 flex flex-col justify-center items-center text-center">
+                    <div class="w-14 h-14 bg-white rounded-full shadow-sm flex items-center justify-center text-brand-500 mb-4 border border-brand-100">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-1">Stuck somewhere?</h3>
+                    <p class="text-xs text-slate-500 mb-5">Our teachers are here to help you out.</p>
+                    <button class="bg-slate-900 hover:bg-slate-800 text-white w-full py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-slate-900/20 transition-transform active:scale-[0.98]">Ask a Doubt</button>
+                </div>
+
+                <!-- Assignment Timeline (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-900">Assignment Timeline</h3>
+                        <a href="#" class="text-xs font-bold text-brand-600 hover:text-brand-800">View All</a>
+                    </div>
+                    
+                    <div class="space-y-4 relative before:absolute before:inset-y-0 before:left-[15px] before:w-[2px] before:bg-slate-100">
+                        
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-rose-100 border-4 border-white flex items-center justify-center z-10 shadow-sm">
+                                <svg class="w-3 h-3 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div class="bg-white/60 border border-white rounded-2xl p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-900">Physics Lab Record</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">Chapter 4 - Light & Reflection</p>
+                                    </div>
+                                    <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">Due Tomorrow</span>
+                                </div>
+                                <button class="mt-3 text-xs font-bold text-brand-600 hover:text-brand-800">Submit Work →</button>
+                            </div>
+                        </div>
+
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center z-10 shadow-sm">
+                                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div class="bg-white/40 border border-white/50 rounded-2xl p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-700">Maths Worksheet</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Polynomials Basics</p>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Next Week</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Resource Hub (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-900">Resource Hub</h3>
+                        <p class="text-xs text-slate-500">Study materials & recordings</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white/60 border border-white rounded-2xl p-4 hover:bg-white transition-colors cursor-pointer group">
+                            <div class="w-10 h-10 bg-brand-50 text-brand-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-900">Syllabus PDF</h4>
+                            <p class="text-[10px] text-slate-500 mt-1">Updated for Term 2</p>
+                        </div>
+                        
+                        <div class="bg-white/60 border border-white rounded-2xl p-4 hover:bg-white transition-colors cursor-pointer group">
+                            <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-900">Recorded Classes</h4>
+                            <p class="text-[10px] text-slate-500 mt-1">Catch up on missed lessons</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
 </body>
 </html>

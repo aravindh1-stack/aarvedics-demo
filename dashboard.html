@@ -1,1072 +1,313 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased hide-scrollbar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aarvedics — Teacher Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      /* Light theme palette (removed yellow/gold tones) */
-      --cream:    #F8FAFC;
-      --cream-2:  #F1F5F9;
-      --cream-3:  #E2E8F0;
-      --sand:     #E6EEF8;
-      --bark:     #6B7280;
-      --ink:      #0F1724;
-      --ink-2:    #334155;
-      --ink-3:    #6B7280;
-      --gold:     #6366F1; /* brand (index's brand-500) */
-      --gold-600: #4F46E5; /* brand-600 */
-      --gold-lt:  #EEF2FF; /* brand-50 / light */
-      --sage:     #10B981;
-      --sage-lt:  #D1FAE5;
-      --rose:     #EF4444;
-      --rose-lt:  #FEE2E2;
-      --indigo:   #4A5FA8;
-      --indigo-lt: #EEF2FF;
-      --white:    #FFFFFF;
-      --shadow-sm: 0 1px 3px rgba(15,23,36,.04), 0 1px 2px rgba(15,23,36,.03);
-      --shadow-md: 0 6px 18px rgba(15,23,36,.06), 0 3px 6px rgba(15,23,36,.04);
-      --shadow-lg: 0 12px 36px rgba(15,23,36,.08), 0 6px 12px rgba(15,23,36,.05);
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
-
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      height: 100vh;
-      display: flex;
-      overflow: hidden;
-    }
-
-    /* ─── SIDEBAR ─────────────────────────────────── */
-    aside {
-      width: 240px;
-      min-width: 240px;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    aside::before {
-      content: '';
-      position: absolute;
-      bottom: -60px; right: -60px;
-      width: 220px; height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(37,99,235,.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .sidebar-logo {
-      padding: 28px 24px 24px;
-      border-bottom: 1px solid var(--cream-3);
-    }
-
-    .logo-mark {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: var(--gold);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 18px;
-      color: var(--white);
-      flex-shrink: 0;
-    }
-
-    .logo-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px;
-      color: var(--ink);
-      letter-spacing: 0.01em;
-      line-height: 1.1;
-    }
-    .logo-text span {
-      display: block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 9px;
-      font-weight: 500;
-      color: var(--bark);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    .sidebar-nav {
-      flex: 1;
-      padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .nav-section-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--bark);
-      padding: 0 10px;
-      margin: 16px 0 8px;
-    }
-    .nav-section-label:first-child { margin-top: 0; }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 9px 12px;
-      border-radius: var(--radius-sm);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(15,23,36,.72);
-      transition: all .18s ease;
-      position: relative;
-    }
-
-    .nav-link:hover {
-      background: rgba(37,99,235,.06);
-      color: rgba(15,23,36,.95);
-    }
-
-    .nav-link.active {
-      background: var(--gold-lt);
-      color: var(--gold);
-    }
-
-    .nav-link.active .nav-icon { opacity: 1; }
-
-    .nav-icon {
-      width: 16px; height: 16px;
-      flex-shrink: 0;
-      opacity: .5;
-    }
-    .nav-link.active .nav-icon,
-    .nav-link:hover .nav-icon { opacity: 1; }
-
-    .nav-badge {
-      margin-left: auto;
-      background: var(--rose);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 20px;
-    }
-
-    .sidebar-footer {
-      padding: 16px 14px;
-      border-top: 1px solid var(--cream-3);
-    }
-
-    .user-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      background: var(--cream-2);
-      border: 1px solid var(--cream-3);
-    }
-
-    .user-avatar {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      background: var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--white);
-      flex-shrink: 0;
-    }
-
-    .user-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .user-role {
-      font-size: 10px;
-      color: var(--bark);
-      font-weight: 500;
-      margin-top: 1px;
-    }
-
-    /* ─── MAIN ──────────────────────────────────────── */
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    header {
-      height: 60px;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--cream-3);
-      padding: 0 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      z-index: 30;
-    }
-
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-    }
-    .breadcrumb-root { color: var(--bark); font-weight: 500; }
-    .breadcrumb-sep { color: var(--sand); }
-    .breadcrumb-current { color: var(--ink); font-weight: 700; }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .live-btn {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--gold);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .15s, transform .08s;
-    }
-    .live-btn:hover { background: var(--gold-600); transform: translateY(-1px); }
-
-    .live-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #4ade80;
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .6; transform: scale(1.3); }
-    }
-
-    .icon-btn {
-      width: 34px; height: 34px;
-      border-radius: var(--radius-sm);
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: all .15s;
-      color: var(--ink-3);
-    }
-    .icon-btn:hover { background: var(--cream-2); color: var(--ink); }
-
-    /* ─── CONTENT ────────────────────────────────────── */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px 32px 40px;
-    }
-
-    .page-header {
-      margin-bottom: 28px;
-    }
-
-    .page-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
-      color: var(--ink);
-      line-height: 1.2;
-      margin-bottom: 4px;
-    }
-
-    .page-subtitle {
-      font-size: 13px;
-      color: var(--bark);
-      font-weight: 500;
-    }
-
-    /* ─── KPI ROW ───────────────────────────────────── */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .kpi-card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      padding: 20px 22px;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow .2s, transform .2s;
-    }
-    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-
-    .kpi-card.accent-gold { border-top: 1px solid var(--cream-3); }
-    .kpi-card.accent-sage { border-top: 1px solid var(--cream-3); }
-    .kpi-card.accent-indigo { border-top: 1px solid var(--cream-3); }
-    .kpi-card.accent-rose { border-top: 1px solid var(--cream-3); }
-
-    .kpi-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--bark);
-      margin-bottom: 10px;
-    }
-
-    .kpi-value {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 28px;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    .kpi-delta {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 10px;
-      font-weight: 600;
-      margin-top: 8px;
-      padding: 2px 7px;
-      border-radius: 20px;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      color: var(--ink-2);
-    }
-    .kpi-delta.up { background: var(--cream-2); color: var(--ink-2); }
-    .kpi-delta.down { background: var(--cream-2); color: var(--ink-2); }
-
-    .kpi-icon {
-      position: absolute;
-      right: 18px; top: 18px;
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .kpi-icon.gold { background: var(--cream-2); color: var(--gold-600); }
-    .kpi-icon.sage { background: var(--cream-2); color: var(--gold-600); }
-    .kpi-icon.indigo { background: var(--cream-2); color: var(--gold-600); }
-    .kpi-icon.rose { background: var(--cream-2); color: var(--gold-600); }
-
-    /* ─── GRID ROW ──────────────────────────────────── */
-    .grid-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 340px;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .grid-row-2 {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 14px;
-    }
-
-    /* ─── CARD BASE ──────────────────────────────────── */
-    .card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-
-    .card-header {
-      padding: 18px 22px 14px;
-      border-bottom: 1px solid var(--cream-2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .card-action {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--gold-600);
-      text-decoration: none;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-      transition: opacity .15s;
-    }
-    .card-action:hover { opacity: .7; }
-
-    .card-tag {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 20px;
-    }
-    .card-tag.morning { background: var(--gold-lt); color: var(--gold-600); }
-    .card-tag.evening { background: var(--indigo-lt); color: var(--indigo); }
-
-    /* ─── ATTENDANCE TABLE ─────────────────────────── */
-    .attendance-list { list-style: none; }
-
-    .att-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 22px;
-      border-bottom: 1px solid var(--cream);
-      transition: background .15s;
-    }
-    .att-row:last-child { border-bottom: none; }
-    .att-row:hover { background: var(--cream); }
-
-    .att-avatar {
-      width: 34px; height: 34px;
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      flex-shrink: 0;
-      border: 1.5px solid var(--cream-2);
-    }
-
-    .att-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .att-meta {
-      font-size: 10px;
-      color: var(--bark);
-      font-weight: 500;
-      margin-top: 2px;
-    }
-
-    .att-status-wrap { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-
-    .status-pill {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 20px;
-    }
-    .status-pill.present { background: var(--sage-lt); color: var(--sage); }
-    .status-pill.absent { background: var(--rose-lt); color: var(--rose); }
-    .status-pill.pending { background: var(--gold-lt); color: var(--gold); }
-
-    /* toggle */
-    .toggle {
-      width: 36px; height: 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 2px;
-      transition: background .2s;
-      flex-shrink: 0;
-    }
-    .toggle.on { background: var(--sage); justify-content: flex-end; }
-    .toggle.off { background: var(--cream-3); justify-content: flex-start; }
-    .toggle-knob {
-      width: 16px; height: 16px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,.18);
-    }
-
-    /* ─── SCHEDULE CARD ─────────────────────────────── */
-    .schedule-list { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
-
-    .schedule-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--cream-2);
-      background: var(--cream);
-      cursor: pointer;
-      transition: all .15s;
-    }
-    .schedule-item:hover { border-color: var(--sand); background: var(--cream-2); }
-    .schedule-item.active-class { border-color: var(--gold); background: var(--gold-lt); }
-
-    .schedule-time {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--bark);
-      min-width: 48px;
-      text-align: right;
-      letter-spacing: -.01em;
-    }
-
-    .schedule-divider {
-      width: 1px;
-      height: 28px;
-      background: var(--sand);
-    }
-
-    .schedule-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .schedule-batch {
-      font-size: 10px;
-      color: var(--bark);
-      margin-top: 1px;
-    }
-
-    .schedule-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-    .schedule-dot.live { background: var(--sage); box-shadow: 0 0 0 3px var(--sage-lt); }
-    .schedule-dot.upcoming { background: var(--sand); }
-
-    /* ─── QUICK ONBOARD ──────────────────────────────── */
-    .onboard-card {
-      background: var(--gold-lt);
-      border: 1px solid var(--gold);
-    }
-
-    .onboard-card .card-header {
-      background: transparent;
-      border-bottom: 1px solid var(--gold);
-    }
-    .onboard-card .card-title { color: var(--gold-600); }
-
-    .onboard-body {
-      padding: 20px 22px;
-    }
-
-    .onboard-desc {
-      font-size: 12px;
-      color: var(--bark);
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .field-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-
-    .field-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--bark);
-      margin-bottom: 4px;
-    }
-
-    .field-input {
-      width: 100%;
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius-sm);
-      padding: 9px 12px;
-      font-size: 12.5px;
-      font-family: inherit;
-      color: var(--ink);
-      outline: none;
-      transition: border-color .15s, background .15s;
-    }
-    .field-input::placeholder { color: rgba(107,114,128,.45); }
-    .field-input:focus { border-color: var(--gold); background: var(--white); }
-
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-    .add-btn {
-      width: 100%;
-      background: var(--gold);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background .15s, transform .1s;
-    }
-    .add-btn:hover { background: var(--gold-600); }
-    .add-btn:active { transform: scale(.98); }
-
-    /* ─── DUES CARD ─────────────────────────────────── */
-    .dues-list { padding: 12px 18px; display: flex; flex-direction: column; gap: 6px; }
-
-    .dues-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 9px;
-      background: var(--cream);
-      border: 1px solid var(--cream-2);
-      transition: all .15s;
-      cursor: pointer;
-    }
-    .dues-item:hover { border-color: var(--rose); background: var(--rose-lt); }
-
-    .dues-avatar {
-      width: 28px; height: 28px;
-      border-radius: 7px;
-      background: var(--rose-lt);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; color: var(--rose);
-      flex-shrink: 0;
-    }
-
-    .dues-name { font-size: 12px; font-weight: 600; color: var(--ink); }
-    .dues-days { font-size: 10px; color: var(--bark); margin-top: 1px; }
-    .dues-amount { margin-left: auto; font-size: 12.5px; font-weight: 700; color: var(--rose); }
-
-    /* ─── PROGRESS BAR ──────────────────────────────── */
-    .progress-row { padding: 18px 22px; display: flex; flex-direction: column; gap: 14px; }
-
-    .prog-item { }
-    .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .prog-label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
-    .prog-val { font-size: 11px; font-weight: 700; color: var(--bark); }
-
-    .prog-bar {
-      height: 6px;
-      background: var(--cream-2);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .prog-fill {
-      height: 100%;
-      border-radius: 10px;
-      transition: width .6s ease;
-    }
-    .prog-fill.gold { background: var(--gold); }
-    .prog-fill.sage { background: var(--sage); }
-    .prog-fill.indigo { background: var(--indigo); }
-
-    /* ─── SCROLLBAR ──────────────────────────────────── */
-    .content::-webkit-scrollbar { width: 5px; }
-    .content::-webkit-scrollbar-track { background: transparent; }
-    .content::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 10px; }
-
-    /* ─── ANIMATIONS ─────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .kpi-card { animation: fadeUp .4s ease both; }
-    .kpi-card:nth-child(1) { animation-delay: .05s; }
-    .kpi-card:nth-child(2) { animation-delay: .1s; }
-    .kpi-card:nth-child(3) { animation-delay: .15s; }
-    .kpi-card:nth-child(4) { animation-delay: .2s; }
-
-    .card { animation: fadeUp .4s ease both; animation-delay: .25s; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarvedics | Teacher Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Space Grotesk"', 'sans-serif'] },
+                    colors: { brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 900: '#1e1b4b' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .animate-fadeUp { animation: fadeUp 0.6s ease-out forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .live-indicator {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Toggle Switch CSS */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label:before {
+            transform: translateX(100%);
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col md:flex-row overflow-x-hidden overflow-y-auto hide-scrollbar relative">
+    
+    <!-- Background Orbs (Matching Student aesthetic with Indigo/Amber) -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-  <!-- ────────── SIDEBAR ────────── -->
-  <aside>
-    <div class="sidebar-logo">
-      <div class="logo-mark">
-        <div class="logo-icon">A</div>
-        <div class="logo-text">
-          Aarvedics
-          <span>Teacher Portal</span>
-        </div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section-label">Main</div>
-
-      <a href="#" class="nav-link active">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Overview
-      </a>
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
-        Students
-        <span class="nav-badge">6</span>
-      </a>
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Schedule
-      </a>
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
-        Analytics
-      </a>
-
-      <div class="nav-section-label">Finance</div>
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Payments
-        <span class="nav-badge">3</span>
-      </a>
-      <a href="#" class="nav-link">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        Reports
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="user-card">
-        <div class="user-avatar">AM</div>
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 glass-nav flex flex-col justify-between relative z-20 flex-shrink-0">
         <div>
-          <div class="user-name">Aravindh M.</div>
-          <div class="user-role">Teacher Account</div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ────────── MAIN ────────── -->
-  <main>
-    <header>
-      <div class="breadcrumb">
-        <span class="breadcrumb-root">Dashboard</span>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Teacher Overview</span>
-      </div>
-      <div class="header-actions">
-        <div class="icon-btn" title="Notifications">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-9.33-5M13 21a2 2 0 01-4 0"/></svg>
-        </div>
-        <div class="icon-btn" title="Settings">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        </div>
-        <button class="live-btn">
-          <div class="live-dot"></div>
-          Live Session
-        </button>
-      </div>
-    </header>
-
-    <div class="content">
-
-      <!-- Page Title -->
-      <div class="page-header">
-        <h1 class="page-title">Good morning, Aravindh 👋</h1>
-        <p class="page-subtitle">Friday, 08 May 2026 &nbsp;·&nbsp; 10th Standard &nbsp;·&nbsp; 3 classes today</p>
-      </div>
-
-      <!-- KPI Row -->
-      <div class="kpi-row">
-        <div class="kpi-card accent-gold">
-          <div class="kpi-icon gold">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="kpi-label">Total Students</div>
-          <div class="kpi-value">128</div>
-          <div class="kpi-delta up">↑ 4 this month</div>
-        </div>
-        <div class="kpi-card accent-sage">
-          <div class="kpi-icon sage">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-label">Revenue</div>
-          <div class="kpi-value">₹42,800</div>
-          <div class="kpi-delta up">↑ 12% vs last</div>
-        </div>
-        <div class="kpi-card accent-indigo">
-          <div class="kpi-icon indigo">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-label">Attendance</div>
-          <div class="kpi-value">94%</div>
-          <div class="kpi-delta up">↑ 2% vs last</div>
-        </div>
-        <div class="kpi-card accent-rose">
-          <div class="kpi-icon rose">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-          </div>
-          <div class="kpi-label">Pending Dues</div>
-          <div class="kpi-value">₹6,400</div>
-          <div class="kpi-delta down">↓ 3 students</div>
-        </div>
-      </div>
-
-      <!-- Row 1: Attendance + Schedule + Quick Onboard -->
-      <div class="grid-row">
-
-        <!-- Attendance -->
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Today's Attendance</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span class="card-tag morning">Morning</span>
-              <button class="card-action">View All</button>
-            </div>
-          </div>
-          <ul class="attendance-list">
-            <li class="att-row">
-              <div class="att-avatar" style="background:var(--gold-lt);color:var(--gold-600);">AK</div>
-              <div>
-                <div class="att-name">Ashwin Kumar</div>
-                <div class="att-meta">Mathematics · Seat 01</div>
-              </div>
-              <div class="att-status-wrap">
-                <span class="status-pill present">Present</span>
-                <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
-                  <div class="toggle-knob"></div>
-                </div>
-              </div>
-            </li>
-            <li class="att-row">
-              <div class="att-avatar" style="background:var(--rose-lt);color:var(--rose);">SP</div>
-              <div>
-                <div class="att-name">Sneha Priya</div>
-                <div class="att-meta">Science · Seat 02</div>
-              </div>
-              <div class="att-status-wrap">
-                <span class="status-pill absent">Absent</span>
-                <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
-                  <div class="toggle-knob"></div>
-                </div>
-              </div>
-            </li>
-            <li class="att-row">
-              <div class="att-avatar" style="background:var(--indigo-lt);color:var(--indigo);">RV</div>
-              <div>
-                <div class="att-name">Rahul Venkat</div>
-                <div class="att-meta">Mathematics · Seat 03</div>
-              </div>
-              <div class="att-status-wrap">
-                <span class="status-pill present">Present</span>
-                <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
-                  <div class="toggle-knob"></div>
-                </div>
-              </div>
-            </li>
-            <li class="att-row">
-              <div class="att-avatar" style="background:var(--sage-lt);color:var(--sage);">KM</div>
-              <div>
-                <div class="att-name">Karthik M.</div>
-                <div class="att-meta">Science · Seat 04</div>
-              </div>
-              <div class="att-status-wrap">
-                <span class="status-pill pending">Pending</span>
-                <div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off');this.previousElementSibling.classList.toggle('present');this.previousElementSibling.classList.toggle('absent');this.previousElementSibling.textContent=this.classList.contains('on')?'Present':'Absent'">
-                  <div class="toggle-knob"></div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Schedule -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Today's Schedule</div>
-            <button class="card-action">Edit</button>
-          </div>
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <div class="schedule-time">08:00<br>AM</div>
-              <div class="schedule-divider"></div>
-              <div>
-                <div class="schedule-name">Mathematics – 10th Std</div>
-                <div class="schedule-batch">Morning Batch · 24 students</div>
-              </div>
-              <div class="schedule-dot upcoming"></div>
-            </div>
-            <div class="schedule-item active-class">
-              <div class="schedule-time" style="color:var(--gold)">10:30<br>AM</div>
-              <div class="schedule-divider" style="background:var(--gold-lt)"></div>
-              <div>
-                <div class="schedule-name" style="color:var(--gold)">Science – 9th Std</div>
-                <div class="schedule-batch">Morning Batch · 18 students</div>
-              </div>
-              <div class="schedule-dot live"></div>
-            </div>
-            <div class="schedule-item">
-              <div class="schedule-time">02:00<br>PM</div>
-              <div class="schedule-divider"></div>
-              <div>
-                <div class="schedule-name">Mathematics – 8th Std</div>
-                <div class="schedule-batch">Evening Batch · 22 students</div>
-              </div>
-              <div class="schedule-dot upcoming"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Onboard -->
-        <div class="card onboard-card">
-          <div class="card-header">
-            <div class="card-title">Quick Onboard</div>
-            <svg width="14" height="14" fill="none" stroke="var(--bark)" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          </div>
-          <div class="onboard-body">
-            <p class="onboard-desc">Generate unique Student &amp; Parent IDs instantly for new joinees.</p>
-            <div class="field-group">
-              <div>
-                <div class="field-label">Student Name</div>
-                <input class="field-input" type="text" placeholder="e.g. Priya Ramesh" />
-              </div>
-              <div class="field-row">
+            <div class="p-5 sm:p-6 border-b border-white/50 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-xl shadow-lg shadow-brand-500/30">A</div>
                 <div>
-                  <div class="field-label">Standard</div>
-                  <input class="field-input" type="text" placeholder="10th" />
+                    <h1 class="font-bold text-slate-900 text-lg leading-tight">Aarvedics</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Teacher Portal</p>
                 </div>
+            </div>
+            
+            <nav class="p-4 space-y-1 flex flex-wrap md:flex-col gap-1">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Main</p>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-brand-50 text-brand-600 font-semibold transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    Overview
+                </a>
+                <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Students
+                    </div>
+                    <span class="bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">6</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Schedule
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
+                    Analytics
+                </a>
+            </nav>
+        </div>
+        
+        <div class="p-4 border-t border-white/50">
+            <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-600 font-medium hover:bg-rose-50 transition-colors w-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Logout
+            </a>
+            <div class="mt-4 flex items-center gap-3 px-2">
+                <div class="w-8 h-8 rounded-full bg-brand-200 border-2 border-white flex items-center justify-center text-xs font-bold text-brand-700">AK</div>
                 <div>
-                  <div class="field-label">Batch</div>
-                  <input class="field-input" type="text" placeholder="Morning" />
+                    <p class="text-sm font-bold text-slate-900 leading-none">Arjun K.</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Mathematics Dept.</p>
                 </div>
-              </div>
-              <div>
-                <div class="field-label">Mobile Number</div>
-                <input class="field-input" type="tel" placeholder="+91 98765 43210" />
-              </div>
             </div>
-            <button class="add-btn" onclick="handleAddStudent(this)">+ Add Student</button>
-          </div>
         </div>
+    </aside>
 
-      </div>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-0 relative z-10 overflow-x-hidden">
+        
+        <!-- Header -->
+        <header class="min-h-16 glass-nav border-b border-white/50 flex flex-col sm:flex-row gap-3 sm:gap-0 items-start sm:items-center justify-between px-4 sm:px-8 py-3 sticky top-0 z-20">
+            <div class="flex items-center gap-2 text-sm font-medium">
+                <span class="text-slate-400">Dashboard</span>
+                <span class="text-slate-300">/</span>
+                <span class="text-slate-800">Teacher Overview</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-xs font-bold text-slate-500 bg-white/50 px-3 py-1.5 rounded-full border border-white">May 09, 2026</div>
+            </div>
+        </header>
 
-      <!-- Row 2: Dues + Batch Progress -->
-      <div class="grid-row-2">
+        <!-- Content Area -->
+        <div class="p-4 sm:p-8 pb-20">
+            <div class="mb-8 animate-fadeUp opacity-0">
+                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Welcome back, Arjun 👋</h2>
+                <p class="text-slate-500 mt-1">You have 2 pending tasks and 1 upcoming live session today.</p>
+            </div>
 
-        <!-- Pending Dues -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Pending Dues</div>
-            <button class="card-action">Send Reminders</button>
-          </div>
-          <div class="dues-list">
-            <div class="dues-item">
-              <div class="dues-avatar">RK</div>
-              <div>
-                <div class="dues-name">Ramesh K.</div>
-                <div class="dues-days">Overdue · 14 days</div>
-              </div>
-              <div class="dues-amount">₹1,200</div>
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                
+                <!-- Live Control Widget (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-100 relative overflow-hidden group border-rose-200/50">
+                    <div class="absolute right-0 top-0 w-48 h-48 bg-rose-500/10 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110"></div>
+                    
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">Next Scheduled Class</h3>
+                            <p class="text-xs text-slate-500 mt-1">10th Standard · Quadratic Equations</p>
+                        </div>
+                        <span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-1 rounded">Starts in 15m</span>
+                    </div>
+                    
+                    <div class="relative z-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-6 mt-8">
+                        <button class="bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold py-4 px-6 sm:px-8 rounded-2xl text-base sm:text-lg transition-transform active:scale-[0.98] shadow-lg shadow-rose-500/30 flex items-center justify-center gap-3 w-full sm:w-auto">
+                            <div class="w-3 h-3 bg-white rounded-full live-indicator"></div>
+                            Start Live Session
+                        </button>
+                        <button class="bg-white/50 hover:bg-white text-slate-600 font-bold py-4 px-6 rounded-2xl text-sm border border-slate-200 transition-colors w-full sm:w-auto">
+                            Prepare Materials
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Session Analytics (Syllabus Progress) -->
+                <div class="glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Syllabus Progress Tracker</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">Algebra (Unit 1)</span>
+                                <span class="text-emerald-600">85%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-emerald-500 w-[85%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">Trigonometry</span>
+                                <span class="text-brand-600">40%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-brand-500 w-[40%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-slate-700">Geometry</span>
+                                <span class="text-slate-400">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+                                <div class="h-full bg-slate-300 w-[0%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Attendance (Spans 1 col) -->
+                <div class="glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-900">Quick Attendance</h3>
+                        <span class="text-[10px] text-slate-500 uppercase">10th Std</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-white/60 p-2 rounded-xl border border-white">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold text-xs">AJ</div>
+                                <span class="text-xs font-bold text-slate-800">Ajay R.</span>
+                            </div>
+                            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="toggle1" checked class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer z-10"/>
+                                <label for="toggle1" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-white/60 p-2 rounded-xl border border-white">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">NK</div>
+                                <span class="text-xs font-bold text-slate-800">Neha K.</span>
+                            </div>
+                            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="toggle2" checked class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer z-10"/>
+                                <label for="toggle2" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between bg-white/60 p-2 rounded-xl border border-white">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs">RV</div>
+                                <span class="text-xs font-bold text-slate-800">Rahul V.</span>
+                            </div>
+                            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="toggle3" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer z-10"/>
+                                <label for="toggle3" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Watchlist (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200 flex flex-col">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                Student Watchlist
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Students below 75% attendance threshold</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-3">
+                        <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100 flex gap-4 items-center">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm font-bold text-slate-900">Vikram S.</p>
+                                    <span class="bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded text-[10px] font-bold">62% ATTENDANCE</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">Missed the last 4 major classes</p>
+                            </div>
+                            <button class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">Notify Parent</button>
+                        </div>
+                        
+                        <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100 flex gap-4 items-center">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm font-bold text-slate-900">Rahul V.</p>
+                                    <span class="bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded text-[10px] font-bold">71% ATTENDANCE</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">Absent today</p>
+                            </div>
+                            <button class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">Notify Parent</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State Demo (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-300 flex flex-col items-center justify-center text-center">
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center text-brand-500 mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-1">No pending assignments to grade!</h3>
+                    <p class="text-sm text-slate-500">You are all caught up for the day. Take a break or prepare for tomorrow.</p>
+                </div>
+
             </div>
-            <div class="dues-item">
-              <div class="dues-avatar">MN</div>
-              <div>
-                <div class="dues-name">Meena N.</div>
-                <div class="dues-days">Overdue · 7 days</div>
-              </div>
-              <div class="dues-amount">₹2,400</div>
-            </div>
-            <div class="dues-item">
-              <div class="dues-avatar">VB</div>
-              <div>
-                <div class="dues-name">Vijay B.</div>
-                <div class="dues-days">Overdue · 3 days</div>
-              </div>
-              <div class="dues-amount">₹800</div>
-            </div>
-          </div>
         </div>
+    </main>
 
-        <!-- Batch Performance -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Batch Performance</div>
-            <button class="card-action">Full Report</button>
-          </div>
-          <div class="progress-row">
-            <div class="prog-item">
-              <div class="prog-top">
-                <div class="prog-label">10th Standard — Mathematics</div>
-                <div class="prog-val">87%</div>
-              </div>
-              <div class="prog-bar"><div class="prog-fill gold" style="width:87%"></div></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-top">
-                <div class="prog-label">9th Standard — Science</div>
-                <div class="prog-val">72%</div>
-              </div>
-              <div class="prog-bar"><div class="prog-fill sage" style="width:72%"></div></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-top">
-                <div class="prog-label">8th Standard — Mathematics</div>
-                <div class="prog-val">91%</div>
-              </div>
-              <div class="prog-bar"><div class="prog-fill indigo" style="width:91%"></div></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-top">
-                <div class="prog-label">Overall Attendance Rate</div>
-                <div class="prog-val">94%</div>
-              </div>
-              <div class="prog-bar"><div class="prog-fill gold" style="width:94%"></div></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </main>
-
-  <script>
-    function handleAddStudent(btn) {
-      const body = btn.closest('.onboard-body');
-      const inputs = body.querySelectorAll('input');
-      const name = inputs[0].value.trim();
-      if (!name) { inputs[0].focus(); return; }
-
-      btn.textContent = 'Adding...';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        const id = 'STU-' + Math.random().toString(36).substr(2,6).toUpperCase();
-        btn.textContent = `✓ Added — ID: ${id}`;
-        btn.style.background = 'var(--sage)';
-        inputs.forEach(i => i.value = '');
-        setTimeout(() => {
-          btn.textContent = '+ Add Student';
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 3000);
-      }, 800);
-    }
-  </script>
 </body>
 </html>

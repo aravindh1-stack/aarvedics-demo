@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="antialiased scroll-smooth hide-scrollbar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarvedics | The Next-Gen Tuition Command Center</title>
+    <title>Aarvedics | The Modern Education Ecosystem</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -17,80 +17,592 @@
         }
     </script>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased overflow-x-hidden relative">
+<body class="bg-slate-50 text-slate-800 font-sans relative overflow-x-hidden overflow-y-auto hide-scrollbar scroll-pt-28 sm:scroll-pt-32">
 
-    <div class="absolute top-[-20%] left-[50%] translate-x-[-50%] w-[800px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes float-subtle {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes float-delayed {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    <nav class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center relative z-10">
-        <div class="text-2xl font-bold tracking-tighter text-slate-900 flex items-center gap-2">
-            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-sm">A.</div>
-            Aarvedics
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-subtle { animation: float-subtle 4s ease-in-out infinite; }
+        .animate-float-delayed { animation: float-delayed 8s ease-in-out infinite 1s; }
+        @keyframes popIn {
+            0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; opacity: 1; }
+        }
+        @keyframes slideInRight {
+            0% { transform: translateX(50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        .animate-fadeUp { animation: fadeUp 0.8s ease-out forwards; }
+        .animate-popIn { animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-progress { animation: fillProgress 3s ease-out forwards; }
+        .animate-slideRight { animation: slideInRight 0.6s ease-out forwards; }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-1000 { animation-delay: 1000ms; }
+        .delay-2000 { animation-delay: 2000ms; }
+        .delay-3500 { animation-delay: 3500ms; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(30, 27, 75, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+        .site-nav {
+            transition: top 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+        }
+        .site-nav .nav-brand,
+        .site-nav .nav-links,
+        .site-nav .nav-login {
+            transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+        }
+        .site-nav.is-scrolled {
+            top: 1rem;
+        }
+        .site-nav.is-scrolled .nav-brand {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: rgba(148, 163, 184, 0.22);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+        }
+        .site-nav.is-scrolled .nav-brand span {
+            color: #0f172a;
+        }
+        .site-nav.is-scrolled .nav-brand .nav-mark {
+            background: #4f46e5;
+            color: #ffffff;
+        }
+        .site-nav.is-scrolled .nav-links {
+            background: rgba(255, 255, 255, 0.86);
+            border-color: rgba(148, 163, 184, 0.2);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.1);
+        }
+        .site-nav.is-scrolled .nav-links a {
+            color: #0f172a;
+        }
+        .site-nav.is-scrolled .nav-links a:hover {
+            color: #4f46e5;
+        }
+        .site-nav.is-scrolled .nav-login {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: rgba(15, 23, 42, 0.12);
+        }
+        .site-nav.is-scrolled .nav-login:hover {
+            background: #1e293b;
+        }
+    </style>
+
+    <!-- Background Ambient Orbs -->
+    <div class="fixed top-[-20%] left-[-10%] w-[800px] h-[800px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <!-- Navigation -->
+    <nav id="siteNav" class="site-nav fixed top-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 md:gap-3 w-max">
+        <!-- Left Pill: Logo -->
+        <a href="#" class="nav-brand flex items-center gap-2 bg-[#111111] border border-white/10 rounded-full px-4 md:px-5 py-2 md:py-2.5 shadow-2xl hover:bg-[#1a1a1a] transition-colors">
+            <div class="nav-mark w-5 h-5 md:w-6 md:h-6 rounded bg-brand-600 text-white flex items-center justify-center font-bold text-[10px] md:text-xs">A</div>
+            <span class="text-white font-bold tracking-tight text-[14px] md:text-[15px] font-sans">Aarvedics</span>
+        </a>
+
+        <!-- Center Pill: Navigation Links -->
+        <div class="nav-links hidden md:flex items-center gap-6 lg:gap-8 bg-[#111111] border border-white/10 rounded-full px-6 lg:px-8 py-2.5 shadow-2xl">
+            <a href="#features" class="text-slate-300 hover:text-white text-[13px] font-medium transition-colors">Platform</a>
+            <a href="#roles" class="text-slate-300 hover:text-white text-[13px] font-medium transition-colors">Ecosystem</a>
+            <a href="#pricing" class="text-slate-300 hover:text-white text-[13px] font-medium transition-colors">Pricing</a>
+            <a href="#contact" class="text-slate-300 hover:text-white text-[13px] font-medium transition-colors">Contact</a>
         </div>
-        <div class="hidden md:flex space-x-8 font-medium text-slate-500 text-sm">
-            <a href="#" class="hover:text-brand-600 transition">Features</a>
-            <a href="#" class="hover:text-brand-600 transition">For Teachers</a>
-            <a href="#" class="hover:text-brand-600 transition">Pricing</a>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="#" class="hidden md:block text-sm font-bold text-slate-600 hover:text-slate-900">Login</a>
-            <button class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Get Started</button>
-        </div>
+
+        <!-- Right Pill: CTA -->
+        <a href="login.html" class="nav-login bg-white hover:bg-slate-200 text-black border border-white/20 rounded-full px-5 md:px-6 py-2 md:py-2.5 text-[13px] md:text-[14px] font-bold transition-transform active:scale-95 shadow-xl whitespace-nowrap">
+            Login
+        </a>
     </nav>
 
-    <header class="max-w-5xl mx-auto px-6 pt-24 pb-20 text-center relative z-10">
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold uppercase tracking-wider mb-8">
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-            </span>
-            Aarga Protocol v1.0
-        </div>
-        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
-            Run your private tuition <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-violet-500">like a tech startup.</span>
-        </h1>
-        <p class="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Stop using WhatsApp groups. Get an isolated, highly secure workspace to manage students, collect fees, and host live sessions with zero distractions.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <button class="bg-brand-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-brand-500 shadow-xl shadow-brand-500/25 transition-all hover:-translate-y-1">Start Free Trial</button>
-            <button class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all">Watch Demo</button>
-        </div>
-    </header>
-
-    <div class="border-y border-slate-200 bg-white/50 backdrop-blur-sm py-8 relative z-10">
-        <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Trusted by elite independent educators</p>
-        <div class="flex justify-center gap-12 text-slate-300 opacity-70 grayscale">
-            <svg class="h-8" viewBox="0 0 100 30" fill="currentColor"><path d="M10 20h20v5H10zM10 5h20v5H10z"/></svg>
-            <svg class="h-8" viewBox="0 0 100 30" fill="currentColor"><circle cx="20" cy="15" r="10"/></svg>
-            <svg class="h-8 hidden md:block" viewBox="0 0 100 30" fill="currentColor"><path d="M10 25L20 5l10 20H10z"/></svg>
-        </div>
-    </div>
-
-    <section class="max-w-7xl mx-auto px-6 py-24 relative z-10">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">Everything you need. Nothing you don't.</h2>
-            <p class="text-slate-500">A clean, focused toolset designed exclusively for tutors.</p>
+    <!-- Hero Section -->
+    <section class="relative z-10 w-full min-h-[100svh] md:min-h-[100dvh] flex items-center justify-center overflow-hidden">
+        
+        <!-- Full Screen Asymmetrical Background Image -->
+        <div class="absolute inset-0 w-full h-full z-0 overflow-hidden">
+            <img src="assets/hero-bg.png" alt="Aarvedics Educational Ecosystem" class="w-full h-full object-cover object-right sm:object-center">
+            <!-- Very subtle gradient on the left side just to ensure text contrast if needed on mobile -->
+            <div class="absolute inset-y-0 left-0 w-full sm:w-1/2 bg-gradient-to-r from-slate-50/90 to-transparent sm:opacity-50"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-12 h-12 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mb-6">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        <div class="relative z-10 pt-28 sm:pt-32 pb-10 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full h-full">
+            
+            <!-- Left Text Content -->
+            <div class="animate-[fadeUp_0.8s_ease-out_both] z-20">
+                <div class="inline-flex items-center gap-2 px-4 py-2 glass-panel rounded-full text-xs font-bold tracking-widest text-brand-600 uppercase mb-8 border border-white/60 bg-white/70 shadow-md backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                    </span>
+                    Version 2.0 Live
                 </div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">100% Isolated Rooms</h3>
-                <p class="text-slate-500">Your students stay yours. No cross-teacher data leakage. Strict multi-tenant architecture ensures complete privacy.</p>
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] mb-6 tracking-tighter drop-shadow-sm">
+                    Education, <br>
+                    <span class="text-brand-600">Re-engineered.</span>
+                </h1>
+                <p class="text-lg text-slate-700 mb-10 max-w-lg leading-relaxed font-medium drop-shadow-sm">
+                    Aarvedics is the ultimate glassmorphic ecosystem uniting Admins, Teachers, Students, and Parents into one seamless, frictionless platform.
+                </p>
+                <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4">
+                    <a href="login.html" class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-slate-900/20 transition-transform active:scale-[0.98] flex items-center justify-center gap-2 border border-slate-700 w-full sm:w-auto">
+                        Enter the Portal
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="#roles" class="bg-white/70 backdrop-blur-lg border border-white/80 shadow-lg hover:bg-white/90 text-slate-800 px-8 py-4 rounded-2xl font-bold transition-colors w-full sm:w-auto text-center">
+                        Explore Ecosystem
+                    </a>
+                </div>
             </div>
-            <div class="bg-slate-900 text-white rounded-3xl p-8 border border-slate-800 shadow-xl overflow-hidden relative">
-                <div class="absolute top-[-50px] right-[-50px] w-32 h-32 bg-brand-500/30 blur-2xl rounded-full"></div>
-                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 backdrop-blur-sm">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+
+            <!-- Right side intentionally left empty to let the background image shine through -->
+            <div class="hidden lg:block w-full h-full"></div>
+            
+        </div>
+    </section>
+
+    <!-- Roles / Bento Grid Section -->
+    <section id="roles" class="relative z-10 pt-20 sm:pt-24 pb-16 sm:pb-20 px-6 md:px-12 max-w-7xl mx-auto scroll-mt-28 sm:scroll-mt-32">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            <div class="lg:col-span-4 lg:sticky lg:top-24 animate-fadeUp opacity-0">
+                <div class="inline-flex items-center gap-2 px-4 py-2 glass-panel rounded-full text-xs font-bold tracking-widest text-brand-600 uppercase mb-5 border border-white/60 bg-white/70 shadow-md backdrop-blur-md">
+                    Platform
                 </div>
-                <h3 class="text-xl font-bold mb-2">Auto-ID Generation</h3>
-                <p class="text-slate-400 text-sm">Add a student, and we automatically generate secure login IDs for both the student and their parents.</p>
+                <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 mb-5 leading-tight">One platform, four focused workspaces.</h2>
+                <p class="text-slate-500 text-base sm:text-lg leading-relaxed max-w-md">
+                    Each role gets a clean route, its own priorities, and a card style that feels different from the others so the platform is easy to scan.
+                </p>
+
+                <div class="mt-8 grid grid-cols-3 gap-3 max-w-md">
+                    <div class="glass-panel rounded-2xl p-4 text-center border border-white/60 bg-white/70">
+                        <div class="text-2xl font-bold text-slate-900">4</div>
+                        <div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Roles</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-4 text-center border border-white/60 bg-white/70">
+                        <div class="text-2xl font-bold text-slate-900">1</div>
+                        <div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Login</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-4 text-center border border-white/60 bg-white/70">
+                        <div class="text-2xl font-bold text-slate-900">24/7</div>
+                        <div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Access</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <div class="sm:col-span-2 glass-panel rounded-[2.25rem] p-8 sm:p-10 bg-gradient-to-br from-slate-900 via-slate-900 to-brand-900 text-white border-slate-800 shadow-2xl animate-fadeUp opacity-0 delay-100">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                        <div class="max-w-xl">
+                            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6 text-brand-400">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <h3 class="text-3xl font-bold mb-3">Master Admin</h3>
+                            <p class="text-slate-300 max-w-2xl leading-relaxed">
+                                A central command layer for health checks, approvals, revenue, and logs.
+                            </p>
+                        </div>
+                        <a href="login.html" class="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-5 py-3 rounded-2xl font-bold shadow-lg hover:bg-slate-100 transition-colors whitespace-nowrap w-full md:w-auto">
+                            View Demo
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                    <div class="mt-8 grid grid-cols-3 gap-3">
+                        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Status</div>
+                            <div class="font-bold">Stable</div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Approvals</div>
+                            <div class="font-bold">Queued</div>
+                        </div>
+                        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+                            <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Logs</div>
+                            <div class="font-bold">Live</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2.25rem] p-8 sm:p-9 bg-white/75 hover:bg-white/90 transition-all group animate-fadeUp opacity-0 delay-200">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Faculty Hub</h3>
+                    <p class="text-slate-500 mb-6 text-sm leading-relaxed">Track classes, student progress, and prep work without jumping around.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Live sessions</span>
+                        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Attendance</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2.25rem] p-8 sm:p-9 bg-amber-50/70 hover:bg-amber-50 transition-all group animate-fadeUp opacity-0 delay-300">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Student Portal</h3>
+                    <p class="text-slate-500 mb-6 text-sm leading-relaxed">See classes, tasks, and resources in a simple learner-first view.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-white/70 text-amber-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Tasks</span>
+                        <span class="px-3 py-1 bg-white/70 text-amber-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Resources</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2.25rem] p-8 sm:p-9 bg-rose-50/70 hover:bg-rose-50 transition-all group animate-fadeUp opacity-0 delay-300 sm:col-span-2">
+                    <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Parent Overview</h3>
+                    <p class="text-slate-500 mb-6 text-sm leading-relaxed max-w-xl">A quick, calm view of progress, fees, and teacher feedback for families.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-white/80 text-rose-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Progress</span>
+                        <span class="px-3 py-1 bg-white/80 text-rose-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Fees</span>
+                        <span class="px-3 py-1 bg-white/80 text-rose-700 text-[10px] font-bold rounded-full uppercase tracking-widest">Feedback</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <section id="features" class="pt-8 sm:pt-10 pb-8 sm:pb-10 px-6 max-w-7xl mx-auto relative z-10 scroll-mt-28 sm:scroll-mt-32 lg:min-h-[calc(100svh-8.5rem)] lg:flex lg:flex-col lg:justify-center">
+    <div class="text-center mb-5 sm:mb-6 animate-fadeUp opacity-0">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-[0.32em] text-white uppercase mb-5 bg-slate-950 shadow-lg shadow-slate-950/20">
+            Ecosystem
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-1.5">One Network, Four Roles</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-sm leading-relaxed">Each user enters a purpose-built route. The ecosystem feels connected, but every room keeps its own focus, permissions, and pace.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
+        <div class="lg:col-span-7 rounded-[1.75rem] p-3 sm:p-4 bg-slate-950 text-white shadow-2xl relative overflow-hidden animate-fadeUp opacity-0 delay-100 border border-slate-800">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.24),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.18),transparent_32%)] pointer-events-none"></div>
+            <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-brand-500/20 blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col h-full gap-3 sm:gap-4">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-[10px] font-bold tracking-[0.24em] uppercase mb-2">
+                        Connected roles
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-1.5 tracking-tight">Ecosystem Map</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed max-w-xl">
+                        Think of the platform as a network: one shared core, four distinct rooms, and clean paths between them.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                    <div class="rounded-[1.25rem] bg-white/6 border border-white/10 p-2.5 sm:p-3">
+                        <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400 font-bold mb-1.5">Core hub</div>
+                        <div class="flex items-center justify-center min-h-[102px] rounded-[1.1rem] bg-slate-900/70 border border-white/8 relative overflow-hidden">
+                            <div class="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
+                            <div class="absolute inset-y-8 left-1/2 w-px bg-gradient-to-b from-transparent via-white/25 to-transparent"></div>
+                            <div class="grid grid-cols-2 gap-2 w-full max-w-[195px] relative z-10">
+                                <div class="rounded-2xl bg-white/10 border border-white/10 p-2 text-center">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-brand-400 mx-auto mb-2"></div>
+                                    <div class="font-semibold text-xs sm:text-sm">Students</div>
+                                </div>
+                                <div class="rounded-2xl bg-white/10 border border-white/10 p-2 text-center">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 mx-auto mb-2"></div>
+                                    <div class="font-semibold text-xs sm:text-sm">Teachers</div>
+                                </div>
+                                <div class="rounded-2xl bg-white/10 border border-white/10 p-2 text-center">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-300 mx-auto mb-2"></div>
+                                    <div class="font-semibold text-xs sm:text-sm">Parents</div>
+                                </div>
+                                <div class="rounded-2xl bg-white/10 border border-white/10 p-2 text-center">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-rose-300 mx-auto mb-2"></div>
+                                    <div class="font-semibold text-xs sm:text-sm">Admins</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-[1.25rem] bg-white/6 border border-white/10 p-2.5 sm:p-3 flex flex-col justify-between gap-2.5">
+                        <div>
+                            <div class="text-[10px] uppercase tracking-[0.28em] text-slate-400 font-bold mb-2">Flow logic</div>
+                            <div class="text-base sm:text-lg font-bold mb-1.5 leading-tight">Room-based access, not one noisy dashboard.</div>
+                            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">Each role lands in a focused space that only shows the actions and data that matter to them.</p>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm">
+                            <div class="rounded-2xl bg-white/7 border border-white/10 p-2 text-center">
+                                <div class="text-[10px] uppercase tracking-[0.24em] text-slate-400 font-bold mb-1">Path</div>
+                                <div class="font-bold">Direct</div>
+                            </div>
+                            <div class="rounded-2xl bg-white/7 border border-white/10 p-2 text-center">
+                                <div class="text-[10px] uppercase tracking-[0.24em] text-slate-400 font-bold mb-1">State</div>
+                                <div class="font-bold">Scoped</div>
+                            </div>
+                            <div class="rounded-2xl bg-white/7 border border-white/10 p-2 text-center">
+                                <div class="text-[10px] uppercase tracking-[0.24em] text-slate-400 font-bold mb-1">Feel</div>
+                                <div class="font-bold">Calm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-2.5 animate-fadeUp opacity-0 delay-200">
+            <div class="rounded-[1.25rem] p-3.5 sm:p-4 bg-brand-600 text-white shadow-2xl shadow-brand-600/20 border border-brand-500/30 relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-bl-full pointer-events-none"></div>
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/15 rounded-2xl flex items-center justify-center mb-2.5">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold mb-1.5">Entry gateway</h3>
+                <p class="text-brand-100 text-[11px] sm:text-xs leading-relaxed mb-2.5">Fast onboarding with a clean route for every role, so the first screen already feels familiar.</p>
+                <div class="grid grid-cols-2 gap-2 sm:gap-3 text-sm">
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-2 sm:p-2.5">
+                        <div class="text-[10px] uppercase tracking-[0.24em] text-brand-100 font-bold mb-1">Login flow</div>
+                        <div class="font-bold">One step</div>
+                    </div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-2 sm:p-2.5">
+                        <div class="text-[10px] uppercase tracking-[0.24em] text-brand-100 font-bold mb-1">Access</div>
+                        <div class="font-bold">Instant</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                <div class="rounded-[1.25rem] p-2.5 sm:p-3 bg-slate-100/90 border border-slate-200 shadow-lg">
+                    <div class="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-2xl bg-brand-100 text-brand-700 flex items-center justify-center mb-2.5">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h7"></path></svg>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-1">Role clarity</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">Everyone sees a different surface, but the underlying system stays unified.</p>
+                </div>
+
+                <div class="rounded-[1.25rem] p-2.5 sm:p-3 bg-slate-100/90 border border-slate-200 shadow-lg">
+                    <div class="w-8.5 h-8.5 sm:w-9 sm:h-9 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-2.5">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path></svg>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-1">Shared backbone</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">One set of data rules, one control layer, and zero messy overlaps.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+    <section id="pricing" class="pt-20 sm:pt-24 pb-16 sm:pb-24 px-6 bg-slate-100/50 relative z-10 border-y border-slate-200 scroll-mt-28 sm:scroll-mt-32">
+    <div class="max-w-4xl mx-auto text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-2 glass-panel rounded-full text-xs font-bold tracking-widest text-brand-600 uppercase mb-5 border border-white/60 bg-white/70 shadow-md backdrop-blur-md">
+            Pricing
+        </div>
+        <h2 class="text-4xl font-bold mb-4 tracking-tighter">Simple, Transparent Pricing</h2>
+        <p class="text-slate-500">Choose a plan that matches your current size and grow without changing the workflow later.</p>
+    </div>
+    
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="glass-panel p-10 rounded-[3rem] border-slate-200 hover:border-brand-500 transition-all">
+            <h4 class="text-lg font-bold mb-2">Growth Plan</h4>
+            <p class="text-slate-500 text-sm mb-4">Best for smaller teams that want the core portal experience.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+                <span class="text-4xl font-bold tracking-tight">₹1,499</span>
+                <span class="text-slate-400">/mo</span>
+            </div>
+            <ul class="space-y-4 mb-10">
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Up to 50 students</li>
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Unlimited live classes</li>
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Parent dashboard essentials</li>
+            </ul>
+            <button class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition">Get Started</button>
+        </div>
+
+        <div class="glass-panel p-10 rounded-[3rem] border-brand-500 bg-brand-50 ring-2 ring-brand-500/20 relative">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-600 text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Most Popular</div>
+            <h4 class="text-lg font-bold mb-2">Nexus Pro</h4>
+            <p class="text-slate-500 text-sm mb-4">For institutions that need the full branded ecosystem and deeper control.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+                <span class="text-4xl font-bold tracking-tight">₹2,999</span>
+                <span class="text-slate-400">/mo</span>
+            </div>
+            <ul class="space-y-4 mb-10">
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Unlimited everything</li>
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Custom domain access</li>
+                <li class="flex items-center gap-3 text-sm font-medium"><svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> White-labeled parent app</li>
+            </ul>
+            <button class="w-full py-4 bg-brand-600 text-white rounded-2xl font-bold hover:bg-brand-500 shadow-xl shadow-brand-500/20 transition">Go Pro</button>
+        </div>
+    </div>
+</section>
+
+    <section id="contact" class="pt-20 sm:pt-24 pb-16 sm:pb-24 px-6 max-w-5xl mx-auto relative z-10 scroll-mt-28 sm:scroll-mt-32">
+    <div class="text-center mb-12 animate-fadeUp opacity-0">
+        <div class="inline-flex items-center gap-2 px-4 py-2 glass-panel rounded-full text-xs font-bold tracking-widest text-brand-600 uppercase mb-5 border border-white/60 bg-white/70 shadow-md backdrop-blur-md">
+            Contact
+        </div>
+        <h2 class="text-4xl font-bold mb-4 tracking-tight">Talk to the Team</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto">If you want onboarding, pricing help, or a custom setup, this is the fastest path to a reply.</p>
+    </div>
+    <div class="glass-panel p-8 sm:p-12 rounded-[3rem] grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <div>
+            <h3 class="text-4xl font-bold mb-6 tracking-tight">Let's talk about your <span class="text-brand-600">AarVedics Room.</span></h3>
+            <p class="text-slate-500 mb-8">Need a custom plan for your institution? We can help you map the right setup, users, and rollout path.</p>
+            
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 bg-white/50 border border-white rounded-2xl px-4 py-3">
+                    <div class="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center text-brand-600 font-bold">@</div>
+                    <span class="text-slate-700 font-medium">support@aarvedics.com</span>
+                </div>
+                <div class="flex items-center gap-4 bg-white/50 border border-white rounded-2xl px-4 py-3">
+                    <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">W</div>
+                    <span class="text-slate-700 font-medium">WhatsApp: +91 98765 43210</span>
+                </div>
+            </div>
+        </div>
+        <form class="space-y-4">
+            <input type="text" placeholder="Your Name" class="w-full bg-white/50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-brand-500 transition">
+            <input type="email" placeholder="Email Address" class="w-full bg-white/50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-brand-500 transition">
+            <textarea placeholder="Tell us about your institution" rows="4" class="w-full bg-white/50 border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:border-brand-500 transition"></textarea>
+            <button class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold shadow-xl shadow-slate-900/10">Send Message</button>
+        </form>
+    </div>
+</section>
+
+    <!-- Premium Footer -->
+    <footer class="relative z-10 bg-[#0B0B10] border-t border-white/10 min-h-[70svh] md:min-h-[100dvh] flex flex-col overflow-hidden w-full">
+        <!-- Ambient Footer Glow -->
+        <div class="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-brand-500/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+        <div class="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col flex-1 py-8 sm:py-10 md:py-12">
+            
+            <!-- Giant Typography Logo -->
+            <div class="w-full flex justify-center items-center flex-1 py-8 sm:py-10 md:py-16 overflow-hidden pointer-events-none">
+                <span class="text-[16vw] sm:text-[20vw] md:text-[18vw] lg:text-[220px] xl:text-[260px] font-bold text-white tracking-tighter leading-[0.8] select-none opacity-90 drop-shadow-2xl">
+                    AarVedics
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 lg:gap-8 mb-16">
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <a href="#" class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 rounded bg-brand-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-brand-500/20">A</div>
+                        <span class="text-white font-bold tracking-tight text-xl font-sans">AarVedics</span>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        The ultimate glassmorphic ecosystem uniting Admins, Teachers, Students, and Parents into one frictionless platform.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-brand-500 hover:text-white hover:border-brand-500 transition-all"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-brand-500 hover:text-white hover:border-brand-500 transition-all"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                    </div>
+                </div>
+
+                <!-- Links 1 -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Platform</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Nexus Gate Authentication</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Master Admin Dashboard</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Faculty Hub</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Student Portal</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Parent Overview</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Resources</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Help Center</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Documentation</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">API Reference</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-brand-400 transition-colors text-sm">Community Forum</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Stay Updated</h4>
+                    <p class="text-slate-400 text-sm mb-4">Get the latest news and updates from AarVedics.</p>
+                    <div class="relative group">
+                        <input type="email" placeholder="Enter your email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+                        <button class="absolute right-1 top-1 bottom-1 bg-brand-600 hover:bg-brand-500 text-white px-4 rounded-lg text-sm font-bold transition-colors">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                <p class="text-sm text-slate-500">© 2026 Aarvedics Ecosystem. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-sm text-slate-500 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-sm text-slate-500 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="text-sm text-slate-500 hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const nav = document.getElementById('siteNav');
+            const hero = document.querySelector('section.relative.z-10.w-full.min-h-\[100svh\]');
+            if (!nav || !hero) return;
+
+            const syncNavState = () => {
+                nav.classList.toggle('is-scrolled', window.scrollY > 24);
+            };
+
+            let ticking = false;
+            const onScroll = () => {
+                if (ticking) return;
+                ticking = true;
+                window.requestAnimationFrame(() => {
+                    syncNavState();
+                    ticking = false;
+                });
+            };
+
+            syncNavState();
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', syncNavState);
+        })();
+    </script>
 </body>
 </html>

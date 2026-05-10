@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="antialiased">
+<html lang="en" class="antialiased hide-scrollbar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,50 +16,85 @@
             }
         }
     </script>
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeUp { animation: fadeUp 0.6s ease-out forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center relative overflow-hidden">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center relative overflow-x-hidden overflow-y-auto hide-scrollbar">
 
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-500/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl"></div>
+    <!-- Background Orbs for Glassmorphism effect -->
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-500/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-3xl"></div>
 
-    <div class="relative w-full max-w-6xl bg-white rounded-[2rem] shadow-2xl border border-slate-100 flex flex-col md:flex-row overflow-hidden m-6 z-10 min-h-[600px]">
+    <div class="relative w-full max-w-6xl glass-panel rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden m-4 sm:m-6 z-10 min-h-[unset] md:min-h-[600px] animate-fadeUp opacity-0">
         
-        <div class="w-full md:w-5/12 bg-slate-900 p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden">
+        <div class="w-full md:w-5/12 bg-slate-900 p-8 sm:p-10 md:p-14 text-white flex flex-col justify-between relative overflow-hidden">
             <div class="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, #6366f1 0%, transparent 60%);"></div>
             
-            <div class="relative z-10">
+            <div class="relative z-10 animate-fadeUp opacity-0 delay-100">
                 <div class="text-3xl font-bold tracking-tighter text-white mb-3">Aarvedics.</div>
                 <div class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider text-brand-50 border border-white/10 uppercase">
-                    Secured Gateway
+                    Nexus Gate
                 </div>
             </div>
 
-            <div class="relative z-10 mt-12 md:mt-0">
-                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Run your tuition like a <span class="text-brand-500">Startup.</span></h2>
-                <p class="text-slate-400 text-sm md:text-base mb-10 leading-relaxed">Access your isolated command center to manage students, collect fees, and host seamless live sessions with zero distractions.</p>
+            <div class="relative z-10 mt-12 md:mt-0 animate-fadeUp opacity-0 delay-200">
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Enter the <span class="text-brand-500">Ecosystem.</span></h2>
+                <p class="text-slate-400 text-sm md:text-base mb-10 leading-relaxed">Unified portal for Admins, Teachers, Students, and Parents. Use your designated credentials to access your isolated command center.</p>
                 
                 <div class="flex items-center space-x-4 bg-white/5 p-4 rounded-2xl border border-white/5 backdrop-blur-sm w-max">
                     <div class="flex -space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-900"></div>
-                        <div class="w-10 h-10 rounded-full bg-slate-600 border-2 border-slate-900"></div>
-                        <div class="w-10 h-10 rounded-full bg-brand-500 border-2 border-slate-900 flex items-center justify-center text-xs font-bold">+5k</div>
+                        <div class="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-900 flex items-center justify-center text-xs font-bold text-white">AD</div>
+                        <div class="w-10 h-10 rounded-full bg-slate-600 border-2 border-slate-900 flex items-center justify-center text-xs font-bold text-white">TR</div>
+                        <div class="w-10 h-10 rounded-full bg-brand-500 border-2 border-slate-900 flex items-center justify-center text-xs font-bold text-white">+2</div>
                     </div>
-                    <p class="text-sm text-slate-300 font-medium">Teachers onboarded</p>
+                    <p class="text-sm text-slate-300 font-medium">4 Roles Supported</p>
                 </div>
             </div>
         </div>
 
-        <div class="w-full md:w-7/12 p-10 md:p-16 bg-white flex flex-col justify-center">
+        <div class="w-full md:w-7/12 p-8 sm:p-10 md:p-16 flex flex-col justify-center animate-fadeUp opacity-0 delay-200">
             <div class="max-w-md w-full mx-auto">
                 <div class="mb-10">
                     <h3 class="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h3>
                     <p class="text-slate-500">Please enter your credentials to access your room.</p>
                 </div>
 
-                <form class="space-y-6" onsubmit="event.preventDefault();">
+                <!-- Error Message Container -->
+                <div id="errorMessage" class="hidden mb-4 p-3 bg-red-100 text-red-700 rounded-xl text-sm font-semibold text-center border border-red-200">
+                    Invalid credentials. Please use demo logins.
+                </div>
+
+                <form id="loginForm" class="space-y-6">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                        <input type="email" placeholder="teacher@aarvedics.com" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-5 py-3.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition duration-200">
+                        <input type="email" id="email" required placeholder="admin@aarvedics.com" class="w-full bg-white/50 backdrop-blur-sm border border-slate-200 text-slate-800 rounded-xl px-5 py-3.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition duration-200">
                     </div>
 
                     <div>
@@ -67,7 +102,7 @@
                             <label class="block text-sm font-bold text-slate-700">Password</label>
                             <a href="#" class="text-xs font-bold text-brand-600 hover:text-brand-500 transition">Forgot password?</a>
                         </div>
-                        <input type="password" placeholder="••••••••••••" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-5 py-3.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition duration-200">
+                        <input type="password" id="password" required placeholder="••••••••••••" class="w-full bg-white/50 backdrop-blur-sm border border-slate-200 text-slate-800 rounded-xl px-5 py-3.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition duration-200">
                     </div>
 
                     <div class="flex items-center pt-2">
@@ -81,12 +116,39 @@
                     </button>
                 </form>
 
-                <div class="mt-10 pt-8 border-t border-slate-100 text-center">
-                    <p class="text-sm text-slate-500 font-medium">Want to host your own classes? <a href="#" class="text-brand-600 font-bold hover:text-brand-700 transition">Create a Room</a></p>
+                <div class="mt-8 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 font-medium">
+                    <p class="font-bold text-slate-800 mb-2">Demo Logins (Any password works):</p>
+                    <ul class="space-y-1 list-disc pl-4">
+                        <li>admin@aarvedics.com</li>
+                        <li>teacher@aarvedics.com</li>
+                        <li>student@aarvedics.com</li>
+                        <li>parent@aarvedics.com</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.toLowerCase();
+            const errorMsg = document.getElementById('errorMessage');
+            
+            errorMsg.classList.add('hidden');
+            
+            if (email.includes('admin')) {
+                window.location.href = 'admin-dashboard.html';
+            } else if (email.includes('teacher')) {
+                window.location.href = 'dashboard.html';
+            } else if (email.includes('student')) {
+                window.location.href = 'student-dashboard.html';
+            } else if (email.includes('parent')) {
+                window.location.href = 'parent-dashboard.html';
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

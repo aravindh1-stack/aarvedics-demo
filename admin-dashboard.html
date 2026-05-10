@@ -1,875 +1,322 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased hide-scrollbar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aarvedics - Admin Control Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --cream:    #F8FAFC;
-      --cream-2:  #F1F5F9;
-      --cream-3:  #E2E8F0;
-      --sand:     #E6EEF8;
-      --bark:     #6B7280;
-      --ink:      #0F1724;
-      --ink-2:    #334155;
-      --ink-3:    #64748B;
-      --brand:    #6366F1;
-      --brand-600:#4F46E5;
-      --brand-lt: #EEF2FF;
-      --sage:     #10B981;
-      --sage-lt:  #D1FAE5;
-      --amber:    #D97706;
-      --amber-lt: #FEF3C7;
-      --rose:     #EF4444;
-      --rose-lt:  #FEE2E2;
-      --white:    #FFFFFF;
-      --shadow-sm: 0 1px 3px rgba(15,23,36,.04), 0 1px 2px rgba(15,23,36,.03);
-      --shadow-md: 0 6px 18px rgba(15,23,36,.06), 0 3px 6px rgba(15,23,36,.04);
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
-
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      height: 100vh;
-      display: flex;
-      overflow: hidden;
-    }
-
-    aside {
-      width: 244px;
-      min-width: 244px;
-      background: var(--white);
-      border-right: 1px solid var(--cream-3);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-
-    aside::before {
-      content: '';
-      position: absolute;
-      top: -58px;
-      right: -58px;
-      width: 220px;
-      height: 220px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(99,102,241,.12) 0%, transparent 72%);
-      pointer-events: none;
-    }
-
-    .sidebar-logo {
-      padding: 26px 20px 20px;
-      border-bottom: 1px solid var(--cream-3);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 1;
-    }
-
-    .logo-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--brand);
-      color: var(--white);
-      display: grid;
-      place-items: center;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .logo-copy {
-      font-size: 16px;
-      line-height: 1.1;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .logo-copy span {
-      display: block;
-      margin-top: 2px;
-      font-size: 9px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--bark);
-      font-weight: 600;
-    }
-
-    .nav {
-      flex: 1;
-      padding: 16px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      z-index: 1;
-    }
-
-    .nav-title {
-      font-size: 9px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--bark);
-      font-weight: 700;
-      margin: 10px 8px 4px;
-    }
-
-    .nav-link {
-      text-decoration: none;
-      color: rgba(15,23,36,.74);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-radius: var(--radius-sm);
-      padding: 9px 10px;
-      font-size: 13px;
-      font-weight: 500;
-      transition: .15s ease;
-    }
-
-    .nav-link svg { width: 15px; height: 15px; opacity: .7; }
-
-    .nav-link:hover {
-      background: rgba(99,102,241,.06);
-      color: var(--ink);
-    }
-
-    .nav-link.active {
-      background: var(--brand-lt);
-      color: var(--brand-600);
-      font-weight: 600;
-    }
-
-    .nav-link.active svg,
-    .nav-link:hover svg { opacity: 1; }
-
-    .admin-card {
-      margin: 0 12px 14px;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .admin-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--brand-lt);
-      border: 1px solid #DDE5FF;
-      color: var(--brand-600);
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-size: 11px;
-    }
-
-    .admin-name { font-size: 12px; font-weight: 700; color: var(--ink); }
-    .admin-role { margin-top: 2px; font-size: 10px; color: var(--bark); }
-
-    main {
-      flex: 1;
-      min-width: 0;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      height: 62px;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--cream-3);
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-    }
-
-    .breadcrumb span:first-child,
-    .breadcrumb span:nth-child(2) { color: var(--bark); }
-    .breadcrumb strong { color: var(--ink); }
-
-    .head-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--cream-3);
-      border-radius: 10px;
-      background: var(--white);
-      color: var(--ink-3);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: .15s ease;
-    }
-
-    .icon-btn:hover {
-      background: var(--cream-2);
-      color: var(--ink);
-    }
-
-    .primary-btn {
-      border: none;
-      border-radius: 10px;
-      background: var(--brand);
-      color: var(--white);
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: .15s ease;
-    }
-
-    .primary-btn:hover { background: var(--brand-600); }
-
-    .content {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 26px 28px 34px;
-    }
-
-    .page-head { margin-bottom: 22px; }
-
-    .page-title {
-      font-size: 27px;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.12;
-    }
-
-    .page-sub {
-      margin-top: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--bark);
-    }
-
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .kpi-card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-      transition: .2s ease;
-    }
-
-    .kpi-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
-    }
-
-    .kpi-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--bark);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 30px;
-      line-height: 1;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .kpi-note {
-      margin-top: 8px;
-      font-size: 10px;
-      color: var(--ink-2);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border: 1px solid var(--cream-3);
-      border-radius: 18px;
-      background: var(--cream-2);
-      padding: 2px 7px;
-      font-weight: 600;
-    }
-
-    .kpi-icon {
-      position: absolute;
-      right: 16px;
-      top: 16px;
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: var(--cream-2);
-      color: var(--brand-600);
-      display: grid;
-      place-items: center;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 12px;
-    }
-
-    .stack { display: grid; gap: 12px; }
-
-    .card {
-      background: var(--white);
-      border: 1px solid var(--cream-3);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--cream-2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .card-link {
-      border: none;
-      background: none;
-      color: var(--brand-600);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .list { list-style: none; }
-
-    .item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 18px;
-      border-bottom: 1px solid var(--cream);
-    }
-
-    .item:last-child { border-bottom: none; }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      flex-shrink: 0;
-      background: var(--brand);
-      box-shadow: 0 0 0 3px var(--brand-lt);
-    }
-
-    .item-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .item-sub {
-      font-size: 10px;
-      margin-top: 2px;
-      color: var(--bark);
-    }
-
-    .status {
-      margin-left: auto;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 7px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      color: var(--ink-2);
-      white-space: nowrap;
-    }
-
-    .status.good { border-color: #BDEFD9; background: var(--sage-lt); color: var(--sage); }
-    .status.warn { border-color: #F8E5AD; background: var(--amber-lt); color: var(--amber); }
-    .status.bad { border-color: #FBC9C9; background: var(--rose-lt); color: var(--rose); }
-
-    .grid-2 {
-      padding: 14px 18px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .quick {
-      border: 1px solid var(--cream-3);
-      border-radius: 10px;
-      padding: 10px;
-      background: var(--white);
-    }
-
-    .quick-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .quick-sub {
-      margin-top: 3px;
-      font-size: 10px;
-      color: var(--bark);
-    }
-
-    .quick-btn {
-      margin-top: 10px;
-      width: 100%;
-      border: 1px solid var(--cream-3);
-      background: var(--cream-2);
-      color: var(--ink-2);
-      border-radius: 8px;
-      padding: 7px 8px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      transition: .15s ease;
-    }
-
-    .quick-btn:hover {
-      border-color: #D5DDFF;
-      background: var(--brand-lt);
-      color: var(--brand-600);
-    }
-
-    .progress-wrap { padding: 16px 18px; }
-
-    .progress-item { margin-bottom: 12px; }
-    .progress-item:last-child { margin-bottom: 0; }
-
-    .progress-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--ink-2);
-    }
-
-    .bar {
-      height: 7px;
-      background: var(--cream-2);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar > span {
-      display: block;
-      height: 100%;
-      border-radius: 999px;
-      background: var(--brand);
-    }
-
-    .notes {
-      padding: 14px 18px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .note {
-      border: 1px solid var(--cream-3);
-      border-radius: 10px;
-      background: var(--white);
-      padding: 10px 11px;
-    }
-
-    .note-head {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .note-body {
-      margin-top: 4px;
-      font-size: 10px;
-      line-height: 1.45;
-      color: var(--bark);
-    }
-
-    @media (max-width: 1200px) {
-      .kpi-row { grid-template-columns: repeat(2, 1fr); }
-      .layout { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 860px) {
-      body {
-        display: block;
-        overflow: auto;
-      }
-
-      aside {
-        width: 100%;
-        min-width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--cream-3);
-      }
-
-      .nav {
-        overflow-x: auto;
-        flex-direction: row;
-        gap: 8px;
-        padding-bottom: 14px;
-      }
-
-      .nav-title { display: none; }
-
-      .nav-link {
-        white-space: nowrap;
-        border: 1px solid var(--cream-3);
-      }
-
-      header { padding: 0 16px; }
-      .content { padding: 20px 16px 28px; }
-      .kpi-row { grid-template-columns: 1fr; }
-      .grid-2 { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarvedics | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Space Grotesk"', 'sans-serif'] },
+                    colors: { brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 900: '#1e1b4b' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .animate-fadeUp { animation: fadeUp 0.6s ease-out forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .live-indicator {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Bar Chart Animation */
+        .bar-grow {
+            transform-origin: bottom;
+            animation: growUp 1s ease-out forwards;
+            transform: scaleY(0);
+        }
+        @keyframes growUp {
+            to { transform: scaleY(1); }
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
-<body>
-  <aside>
-    <div class="sidebar-logo">
-      <div class="logo-icon">A</div>
-      <div class="logo-copy">Aarvedics<span>Aarga Admin</span></div>
-    </div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col md:flex-row overflow-x-hidden overflow-y-auto hide-scrollbar relative">
+    
+    <!-- Background Orbs -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <nav class="nav">
-      <div class="nav-title">Control</div>
-      <a class="nav-link active" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Master Overview
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
-        Users
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2"/><path stroke-linecap="round" d="M12 7v10M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Billing
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16"/></svg>
-        Analytics
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h16.9a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-        Alerts
-      </a>
-
-      <div class="nav-title">System</div>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 010 2.8 2 2 0 01-2.8 0l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 01-2.8-2.8l.1-.1A1.6 1.6 0 004.7 15a1.6 1.6 0 00-1.5-1H3a2 2 0 010-4h.1A1.6 1.6 0 004.6 9a1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 012.8-2.8l.1.1A1.6 1.6 0 009 4.7a1.6 1.6 0 001-1.5V3a2 2 0 014 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 012.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1H21a2 2 0 010 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg>
-        Configuration
-      </a>
-      <a class="nav-link" href="#">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12c0 4.4-4 8-9 8a9.7 9.7 0 01-4-.8L3 20l1.2-3.2A7.7 7.7 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg>
-        Support Queue
-      </a>
-    </nav>
-
-    <div class="admin-card">
-      <div class="admin-avatar">AM</div>
-      <div>
-        <div class="admin-name">Aravindh M.</div>
-        <div class="admin-role">Super Admin Access</div>
-      </div>
-    </div>
-  </aside>
-
-  <main>
-    <header>
-      <div class="breadcrumb">
-        <span>Dashboard</span>
-        <span>/</span>
-        <strong>Admin Control Center</strong>
-      </div>
-      <div class="head-actions">
-        <button class="icon-btn" title="Notifications">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m4 0a2 2 0 11-4 0"/></svg>
-        </button>
-        <button class="icon-btn" title="Global Settings">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 010 2.8 2 2 0 01-2.8 0l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 01-2.8-2.8l.1-.1A1.6 1.6 0 004.7 15a1.6 1.6 0 00-1.5-1H3a2 2 0 010-4h.1A1.6 1.6 0 004.6 9a1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 012.8-2.8l.1.1A1.6 1.6 0 009 4.7a1.6 1.6 0 001-1.5V3a2 2 0 014 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 012.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8 1.6 1.6 0 001.5 1H21a2 2 0 010 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg>
-        </button>
-        <button class="primary-btn">Create Announcement</button>
-      </div>
-    </header>
-
-    <div class="content">
-      <div class="page-head">
-        <h1 class="page-title">Full Control Admin Portal</h1>
-        <p class="page-sub">Friday, 08 May 2026 - Real-time governance for teachers, students, parents, payments, and platform health.</p>
-      </div>
-
-      <section class="kpi-row">
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="kpi-label">Active Teachers</div>
-          <div class="kpi-value">42</div>
-          <div class="kpi-note">+3 this month</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M8 3v4m8-4v4M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          </div>
-          <div class="kpi-label">Active Students</div>
-          <div class="kpi-value">1,286</div>
-          <div class="kpi-note">94% attendance avg</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2"/><path stroke-linecap="round" d="M12 7v10M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div class="kpi-label">Monthly Revenue</div>
-          <div class="kpi-value">Rs. 8.9L</div>
-          <div class="kpi-note">Collection rate 96%</div>
-        </article>
-
-        <article class="kpi-card">
-          <div class="kpi-icon">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h16.9a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-          </div>
-          <div class="kpi-label">Open Tickets</div>
-          <div class="kpi-value">17</div>
-          <div class="kpi-note">4 require immediate action</div>
-        </article>
-      </section>
-
-      <section class="layout">
-        <div class="stack">
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Approval Queue</div>
-              <button class="card-link">View All Requests</button>
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 glass-nav flex flex-col justify-between relative z-20 flex-shrink-0">
+        <div>
+            <div class="p-5 sm:p-6 border-b border-white/50 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-xl shadow-lg shadow-brand-500/30">A</div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-lg leading-tight">Aarvedics</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Admin Nexus</p>
+                </div>
             </div>
-            <ul class="list">
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Teacher onboarding: Priyanka S.</div>
-                  <div class="item-sub">KYC submitted · Physics (11th and 12th)</div>
-                </div>
-                <span class="status warn">Pending</span>
-              </li>
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Batch merge request: 10A + 10B</div>
-                  <div class="item-sub">Requested by Arjun K. · Capacity impact medium</div>
-                </div>
-                <span class="status warn">Review</span>
-              </li>
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Parent complaint escalation #4182</div>
-                  <div class="item-sub">Fee mismatch report · South campus</div>
-                </div>
-                <span class="status bad">High</span>
-              </li>
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Student transfer request #9021</div>
-                  <div class="item-sub">Class 9 to Class 10 bridge program</div>
-                </div>
-                <span class="status good">Ready</span>
-              </li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Platform Health</div>
-              <button class="card-link">Open Monitoring</button>
-            </div>
-            <div class="progress-wrap">
-              <div class="progress-item">
-                <div class="progress-top"><span>API Availability</span><span>99.94%</span></div>
-                <div class="bar"><span style="width:99.94%"></span></div>
-              </div>
-              <div class="progress-item">
-                <div class="progress-top"><span>Live Class Stability</span><span>98.60%</span></div>
-                <div class="bar"><span style="width:98.6%"></span></div>
-              </div>
-              <div class="progress-item">
-                <div class="progress-top"><span>Payment Gateway Success</span><span>96.30%</span></div>
-                <div class="bar"><span style="width:96.3%"></span></div>
-              </div>
-              <div class="progress-item">
-                <div class="progress-top"><span>Notification Delivery</span><span>97.80%</span></div>
-                <div class="bar"><span style="width:97.8%"></span></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Audit Log</div>
-              <button class="card-link">Export CSV</button>
-            </div>
-            <ul class="list">
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Role changed: Teacher to Senior Teacher</div>
-                  <div class="item-sub">By admin AM · 11:28 AM</div>
-                </div>
-                <span class="status good">Logged</span>
-              </li>
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">Bulk fee reminder campaign launched</div>
-                  <div class="item-sub">2,174 parents targeted · 09:10 AM</div>
-                </div>
-                <span class="status good">Sent</span>
-              </li>
-              <li class="item">
-                <span class="dot"></span>
-                <div>
-                  <div class="item-title">System config update: session timeout</div>
-                  <div class="item-sub">From 30m to 45m · 08:02 AM</div>
-                </div>
-                <span class="status warn">Tracked</span>
-              </li>
-            </ul>
-          </article>
+            
+            <nav class="p-4 space-y-1 flex flex-wrap md:flex-col gap-1">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Menu</p>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-brand-50 text-brand-600 font-semibold transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v9a4 4 0 01-4 4z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Users
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2"/><path stroke-linecap="round" d="M12 7v10M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Finances
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100/50 hover:text-slate-900 transition-colors">
+                    <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6M4 20h16"/></svg>
+                    Logs
+                </a>
+            </nav>
         </div>
-
-        <div class="stack">
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Quick Controls</div>
-              <button class="card-link">Manage Permissions</button>
-            </div>
-            <div class="grid-2">
-              <div class="quick">
-                <div class="quick-title">Create Teacher</div>
-                <div class="quick-sub">Provision account with role presets</div>
-                <button class="quick-btn">Launch Wizard</button>
-              </div>
-              <div class="quick">
-                <div class="quick-title">Open New Batch</div>
-                <div class="quick-sub">Allocate slots, schedule, and faculty</div>
-                <button class="quick-btn">Configure Batch</button>
-              </div>
-              <div class="quick">
-                <div class="quick-title">Send Broadcast</div>
-                <div class="quick-sub">Push notice to all users instantly</div>
-                <button class="quick-btn">Compose Notice</button>
-              </div>
-              <div class="quick">
-                <div class="quick-title">Finance Sync</div>
-                <div class="quick-sub">Reconcile pending payment records</div>
-                <button class="quick-btn">Start Sync</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Critical Alerts</div>
-              <button class="card-link">Open Incident Center</button>
-            </div>
-            <ul class="list">
-              <li class="item">
-                <span class="dot" style="background:var(--rose);box-shadow:0 0 0 3px var(--rose-lt);"></span>
+        
+        <div class="p-4 border-t border-white/50">
+            <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-600 font-medium hover:bg-rose-50 transition-colors w-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Logout
+            </a>
+            <div class="mt-4 flex items-center gap-3 px-2">
+                <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-xs font-bold text-slate-600">AM</div>
                 <div>
-                  <div class="item-title">Payment webhook retries crossing threshold</div>
-                  <div class="item-sub">Gateway B · 7 failures in last 10 min</div>
+                    <p class="text-sm font-bold text-slate-900 leading-none">Aravindh M.</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Super Admin</p>
                 </div>
-                <span class="status bad">Urgent</span>
-              </li>
-              <li class="item">
-                <span class="dot" style="background:var(--amber);box-shadow:0 0 0 3px var(--amber-lt);"></span>
-                <div>
-                  <div class="item-title">Live session quality degraded</div>
-                  <div class="item-sub">East region node latency above baseline</div>
-                </div>
-                <span class="status warn">Watch</span>
-              </li>
-              <li class="item">
-                <span class="dot" style="background:var(--sage);box-shadow:0 0 0 3px var(--sage-lt);"></span>
-                <div>
-                  <div class="item-title">Backup completed successfully</div>
-                  <div class="item-sub">Daily snapshot at 03:10 AM</div>
-                </div>
-                <span class="status good">Stable</span>
-              </li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <div class="card-title">Admin Notes</div>
-              <button class="card-link">Edit Notes</button>
             </div>
-            <div class="notes">
-              <div class="note">
-                <div class="note-head">May Growth Target</div>
-                <p class="note-body">Target 75 new paid student enrollments. Current progress: 49 confirmed.</p>
-              </div>
-              <div class="note">
-                <div class="note-head">Policy Reminder</div>
-                <p class="note-body">All new teacher accounts must pass KYC and demo class quality check before activation.</p>
-              </div>
-              <div class="note">
-                <div class="note-head">Operational Focus</div>
-                <p class="note-body">Reduce support first-response time below 10 minutes across all working hours.</p>
-              </div>
-            </div>
-          </article>
         </div>
-      </section>
-    </div>
-  </main>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-0 relative z-10 overflow-x-hidden">
+        
+        <!-- Header -->
+        <header class="min-h-16 glass-nav border-b border-white/50 flex flex-col sm:flex-row gap-3 sm:gap-0 items-start sm:items-center justify-between px-4 sm:px-8 py-3 sticky top-0 z-20">
+            <div class="flex items-center gap-2 text-sm font-medium">
+                <span class="text-slate-400">Dashboard</span>
+                <span class="text-slate-300">/</span>
+                <span class="text-slate-800">Master Control Center</span>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="p-4 sm:p-8 pb-20">
+            <div class="mb-8 animate-fadeUp opacity-0">
+                <h2 class="text-3xl font-bold text-slate-900 tracking-tight">System Overview</h2>
+                <p class="text-slate-500 mt-1">Real-time governance platform.</p>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                
+                <!-- System Pulse (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-100 flex flex-col justify-center items-center relative overflow-hidden group">
+                    <div class="absolute right-0 top-0 w-48 h-48 bg-emerald-500/10 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110"></div>
+                    
+                    <div class="text-center relative z-10 w-full">
+                        <h3 class="font-bold text-slate-900 text-xl mb-6">Nexus Status</h3>
+                        
+                        <div class="inline-flex items-center justify-center gap-4 bg-emerald-50 border border-emerald-200 px-6 py-4 rounded-2xl shadow-sm">
+                            <div class="w-4 h-4 rounded-full bg-emerald-500 live-indicator"></div>
+                            <span class="text-lg font-bold text-emerald-700 tracking-wide">ALL SYSTEMS STABLE</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-8 w-full max-w-md mx-auto">
+                            <div class="bg-white/60 p-3 rounded-xl border border-white">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">API Latency</p>
+                                <p class="text-lg font-bold text-slate-900">42ms</p>
+                            </div>
+                            <div class="bg-white/60 p-3 rounded-xl border border-white">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Active Users</p>
+                                <p class="text-lg font-bold text-slate-900">1,204</p>
+                            </div>
+                            <div class="bg-white/60 p-3 rounded-xl border border-white">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Uptime</p>
+                                <p class="text-lg font-bold text-slate-900">99.9%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Approval Queue (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200 flex flex-col">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                Teacher Approval Queue
+                                <span class="bg-rose-100 text-rose-600 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Action Required</span>
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Pending KYC and Verification requests</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-3">
+                        <div class="bg-white/60 p-3 rounded-2xl border border-white flex gap-3 items-center hover:shadow-md transition-shadow">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs shadow-sm border border-white">PS</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-900 leading-tight">Priyanka S.</p>
+                                <p class="text-xs text-slate-500 font-medium">Physics Dept. · 3 files attached</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <button class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-2 rounded-xl text-xs font-bold transition-colors">Reject</button>
+                                <button class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">Approve</button>
+                            </div>
+                        </div>
+                        <div class="bg-white/60 p-3 rounded-2xl border border-white flex gap-3 items-center hover:shadow-md transition-shadow">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-xs shadow-sm border border-white">AK</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-900 leading-tight">Arjun K.</p>
+                                <p class="text-xs text-slate-500 font-medium">Mathematics Dept. · 1 file attached</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <button class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-2 rounded-xl text-xs font-bold transition-colors">Reject</button>
+                                <button class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Flow (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-300 flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="font-bold text-slate-900">Revenue Flow</h3>
+                            <p class="text-xs text-slate-500 mt-1">Monthly collection growth</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-emerald-600">Rs. 18.4L</p>
+                            <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded inline-block mt-1">+14.2% YTD</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 flex items-end justify-between gap-2 h-[140px] px-2">
+                        <!-- Stylized CSS Bar Chart -->
+                        <div class="w-full bg-brand-100 rounded-t-xl bar-grow hover:bg-brand-200 transition-colors cursor-pointer" style="height: 40%; animation-delay: 0.1s" title="Jan: 4.2L"></div>
+                        <div class="w-full bg-brand-200 rounded-t-xl bar-grow hover:bg-brand-300 transition-colors cursor-pointer" style="height: 55%; animation-delay: 0.2s" title="Feb: 6.1L"></div>
+                        <div class="w-full bg-brand-300 rounded-t-xl bar-grow hover:bg-brand-400 transition-colors cursor-pointer" style="height: 45%; animation-delay: 0.3s" title="Mar: 5.0L"></div>
+                        <div class="w-full bg-brand-400 rounded-t-xl bar-grow hover:bg-brand-500 transition-colors cursor-pointer" style="height: 70%; animation-delay: 0.4s" title="Apr: 8.9L"></div>
+                        <div class="w-full bg-brand-500 rounded-t-xl bar-grow hover:bg-brand-600 transition-colors cursor-pointer" style="height: 90%; animation-delay: 0.5s" title="May: 12.4L"></div>
+                        <div class="w-full bg-brand-600 rounded-t-xl bar-grow hover:bg-brand-700 transition-colors cursor-pointer" style="height: 100%; animation-delay: 0.6s" title="Jun: 18.4L"></div>
+                    </div>
+                    
+                    <div class="flex justify-between mt-3 text-[10px] font-bold text-slate-400 uppercase">
+                        <span>Jan</span>
+                        <span>Feb</span>
+                        <span>Mar</span>
+                        <span>Apr</span>
+                        <span>May</span>
+                        <span>Jun</span>
+                    </div>
+                </div>
+
+                <!-- Global Logs (Spans 2 cols) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-6 animate-fadeUp opacity-0 delay-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-900">Global Audit Log</h3>
+                        <button class="text-xs font-bold text-brand-600 hover:text-brand-800 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm transition-colors">Export CSV</button>
+                    </div>
+                    
+                    <div class="bg-white/40 border border-white rounded-2xl p-4 h-[200px] overflow-y-auto hide-scrollbar space-y-4">
+                        <div class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shadow-[0_0_0_4px_rgba(16,185,129,0.1)] flex-shrink-0"></div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">SYSTEM</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Automated database backup completed successfully. Snapshot ID: #SNAP-8821</p>
+                            </div>
+                            <span class="text-[9px] font-bold text-slate-400 ml-auto whitespace-nowrap">10:45 AM</span>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-brand-500 mt-1.5 shadow-[0_0_0_4px_rgba(99,102,241,0.1)] flex-shrink-0"></div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">ADMIN (AM)</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Approved KYC for Teacher account: Arjun K. (Maths Dept.)</p>
+                            </div>
+                            <span class="text-[9px] font-bold text-slate-400 ml-auto whitespace-nowrap">09:12 AM</span>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shadow-[0_0_0_4px_rgba(245,158,11,0.1)] flex-shrink-0"></div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">BILLING GATEWAY</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Processed batch settlements. Total value: Rs. 1.2L.</p>
+                            </div>
+                            <span class="text-[9px] font-bold text-slate-400 ml-auto whitespace-nowrap">08:00 AM</span>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-rose-500 mt-1.5 shadow-[0_0_0_4px_rgba(244,63,94,0.1)] flex-shrink-0"></div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">SECURITY</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Failed login attempt (x3) on admin@aarvedics.com from IP 192.168.1.1</p>
+                            </div>
+                            <span class="text-[9px] font-bold text-slate-400 ml-auto whitespace-nowrap">03:22 AM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zero Empty State Demo (Spans 4 cols, hidden for spacing unless needed, adding a fun tip instead) -->
+                <div class="lg:col-span-4 glass-card rounded-3xl p-4 animate-fadeUp opacity-0 delay-300 flex items-center justify-between border-brand-100 bg-brand-50/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm border border-brand-100">💡</div>
+                        <p class="text-sm font-semibold text-brand-900">Pro Tip: No urgent alerts right now. System performance is optimal.</p>
+                    </div>
+                    <button class="text-xs font-bold text-brand-600 hover:text-brand-800 bg-white px-3 py-1.5 rounded-lg shadow-sm transition-colors border border-brand-200">Dismiss</button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+    </style>
 </body>
 </html>
